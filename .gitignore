@@ -1,2 +1,6 @@
 __pycache__
 .idea
+*.xml
+*.iml
+*.gv
+*.pdf
