@@ -13,9 +13,10 @@ class Gui(wx.Frame):
         self.text_editors = []
         self.panel = wx.Panel(self)
         self.Maximize(False)
+        self.Center()
 
 
-    def addButton(self, text, pos, size=(400, 30), callback=None):
+    def addButton(self, text, pos, size=(400, 50), callback=None):
         self.button_id += 1
         bt = wx.Button(self.panel, self.button_id, text, pos=pos, name=text, size=size)
         bt.Bind(wx.EVT_BUTTON,  callback)
