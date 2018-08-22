@@ -2,7 +2,7 @@ from gui import Gui
 from event_handler import EventHandler
 
 
-W_SIZE = 1024
+W_SIZE = 886
 H_SIZE = 400
 g = Gui(None, title="", size=(W_SIZE, H_SIZE))
 e = EventHandler(g)
@@ -16,5 +16,6 @@ g.addButton("Verificar se dois vertices sao adjacentes" , (0, (h*len(g.getButton
 g.addButton("Retornar elemento de uma aresta" , (0, (h*len(g.getButtons()))), callback=e.onReturnEdgeElement)
 g.addButton("Retornar elemento de um vertice" , (0, (h*len(g.getButtons()))), callback=e.onReturnVertexElement)
 g.addButton("Retornar referencias para dois vertices finais de aresta" , (0, (h*len(g.getButtons()))), callback=e.onReturn2VertexReferences)
+g.addViewer()
 g.Show()
 g.MainLooop()
