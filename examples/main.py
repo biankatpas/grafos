@@ -11,9 +11,16 @@ print(g.insertVertex("A"))
 print(g.insertVertex("B"))
 print(g.insertVertex("C"))
 
-g.insertEdge("A", "B", "AB")
-g.insertEdge("A", "C", "AC")
+print(g.insertEdge("A", "B", "AB"))
+print(g.insertEdge("A", "C", "AC"))
 
 g.removeVertex("A")
+# g.removeEdge() #TODO
+
+# g.checkAdjacency() #TODO
+
+# g.returnEdgeElement() #TODO
+# g.returnVertexElement() #TODO
+# g.return2VertexReferences() #TODO
 
 g.renderGraph()
