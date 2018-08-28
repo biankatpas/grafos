@@ -1,15 +1,19 @@
+import os
 from grafoMaker import GrafoMaker
-from graphviz import Graph
 
+DEBUG = 0
+if "DEBUG" in os.environ:
+    DEBUG = int(os.environ["DEBUG"])
 
-grafo = Graph ('G', filename='testing.gv')
+g = GrafoMaker(debug=DEBUG)
 
-g = GrafoMaker()
+print(g.insertVertex("A"))
+print(g.insertVertex("B"))
+print(g.insertVertex("C"))
 
-numero1 = g.insertVertex("A", grafo)
-numero2 = g.insertVertex("B", grafo)
-numero3 = g.insertEdge("A", "B", "AB", grafo)
+g.insertEdge("A", "B", "AB")
+g.insertEdge("A", "C", "AC")
 
-print(numero1, numero2, numero3)
+g.removeVertex("A")
 
-grafo.view()
+g.renderGraph()

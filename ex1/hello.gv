@@ -1,5 +1,5 @@
 digraph G {
-	Hello -> World
+	Hello -> World [label=a]
 	a -> b
 	b -> c
 	c -> a
