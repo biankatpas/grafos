@@ -1,8 +1,0 @@
-digraph G {
-	Hello -> World [label=a]
-	a -> b
-	b -> c
-	c -> a
-	a -> d
-	d -> e
-}

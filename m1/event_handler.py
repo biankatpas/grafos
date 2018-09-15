@@ -1,5 +1,3 @@
-import re
-
 class EventHandler:
     def __init__(self, gui):
         self.gui = gui
@@ -16,7 +14,7 @@ class EventHandler:
     def onRemoveEdge(self, evt):
         print('todo')
 
-    def onCheckAdjacency(self, evt):
+    def onCheck2VertexAdjacency(self, evt):
         print('todo')
 
     def onReturnEdgeElement(self, evt):
@@ -26,4 +24,16 @@ class EventHandler:
         print('todo')
 
     def onReturn2VertexReferences(self, evt):
+        print('todo')
+
+    def onCheckPlanarGraph(self, evt):
+        print('todo')
+
+    def onBreadthSearch(self, evt):
+        print('todo')
+
+    def onDepthSearch(self, evt):
+        print('todo')
+
+    def onPRIM(self, evt):
         print('todo')

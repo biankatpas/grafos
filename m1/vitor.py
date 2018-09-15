@@ -1,7 +1,6 @@
 ##
 # bianka; vitor
 # grafos
-# ex1
 ##
 
 def menu ():
