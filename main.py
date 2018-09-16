@@ -26,9 +26,7 @@ labels = (
             "Verificar se o grafo é planar",
             "Busca em largura",
             "Busca em profundidade",
-            "PRIM",
-            "ZoomIn",
-            "ZoomOut"
+            "PRIM"
          )
 
 g.add_button(labels[0], (0, (h * len(g.get_buttons()))), callback=e.on_insert_vertex)
