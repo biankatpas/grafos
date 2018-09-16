@@ -56,7 +56,10 @@ class GraphMaker:
                     print(self.adjlist)
                     print(self.labels)
                     print(self.edges)
-            return "Vértice " + str(reference) + " removido."
+            message = "Vértice " + str(reference) + " removido.\nAtenção: referências dos vértices atualizadas.\n"
+            for i in range(0, len(self.nodos)):
+                message = message + self.return_vertex_element(i) + "\n"
+            return message
         return "Vértice não encontrado no grafo."
 
     def remove_edge(self, reference):
@@ -67,7 +70,10 @@ class GraphMaker:
             if self.debug >= 1:
                 print(self.labels)
                 print(self.edges)
-            return "Aresta " + str(reference) + " removida."
+            message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas.\n"
+            for i in range(0, len(self.labels)):
+                message = message + self.return_edge_element(i) + "\n"
+            return message
         return "Aresta " + str(reference) + " não encontrada no grafo."
 
     def check_adjacency(self, vertex_a, vertex_b):
@@ -111,7 +117,7 @@ class GraphMaker:
             gv.node(nodo)
         for e in self.edges:
             gv.edge(self.edges[e][0], self.edges[e][1], label=e)
-        # gv.view()               # render, save and show graph image
+        # gv.view()           # render, save and show graph image
         gv.render(view=False) # just render and save graph image
 
     # todo: algoritmos
