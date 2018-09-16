@@ -24,15 +24,18 @@ class EventHandler:
         ret = self.graph.insert_edge("A", "B", str('AB'))
         self.print_feedback(ret)
 
+        ret = self.graph.insert_edge("A", "C", str('AC'))
+        self.print_feedback(ret)
+
     def on_remove_vertex(self, evt):
-        ret = self.graph.remove_vertex(2)
+        ret = self.graph.remove_vertex(0)
         self.print_feedback(ret)
 
     def on_remove_edge(self, evt):
         ret = self.graph.remove_edge(0)
         self.print_feedback(ret)
 
-    def on_check_2_vertex_adjacency(self, evt):
+    def on_check_adjacency(self, evt):
         ret = self.graph.check_adjacency("A", "C")
         self.print_feedback(ret)
         ret = self.graph.check_adjacency("A", "B")
@@ -52,28 +55,27 @@ class EventHandler:
         ret = self.graph.return_vertex_element(3)
         self.print_feedback(ret)
 
-    def on_return_edge_2_vertex_references(self, evt):
-        ret = self.graph.return_2_edge_vertex_references(0)
+    def on_return_vertices_references_from_edge(self, evt):
+        ret = self.graph.return_vertices_references_from_edge(0)
         self.print_feedback(ret)
-        ret = self.graph.return_2_edge_vertex_references(1)
+        ret = self.graph.return_vertices_references_from_edge(1)
+        self.print_feedback(ret)
+
+    def on_check_planar_graph(self, evt):
+        ret = self.graph.check_planar_graph()
+        self.print_feedback(ret)
+
+    def on_breadth_search(self, evt):
+        ret = self.graph.breadth_search()
+        self.print_feedback(ret)
+
+    def on_depth_search(self, evt):
+        ret = self.graph.depth_search()
+        self.print_feedback(ret)
+
+    def on_prim(self, evt):
+        ret = self.graph.prim()
         self.print_feedback(ret)
 
     def print_feedback(self, message):
        self.gui.text_area.AppendText(message + "\n")
-
-    # todo: vitor
-    def on_check_planar_graph(self, evt):
-        ret = "vitor"
-        self.print_feedback(ret)
-
-    def on_breadth_search(self, evt):
-        ret = "vitor"
-        self.print_feedback(ret)
-
-    def on_depth_search(self, evt):
-        ret = "vitor"
-        self.print_feedback(ret)
-
-    def on_prim(self, evt):
-        ret = "vitor"
-        self.print_feedback(ret)
