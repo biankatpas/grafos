@@ -13,7 +13,7 @@ class GraphMaker:
         if vertex not in self.nodos:
             self.nodos.append(vertex)
             self.adjlist[vertex] = []
-            if self.debug:
+            if self.debug >= 1:
                 print(self.adjlist)
             return "Inserido vértice: " + vertex + ". Referência: " + str(self.nodos.index(vertex))
         return "Vértice já existe no grafo. Não inserido."
@@ -28,7 +28,7 @@ class GraphMaker:
                 self.edges[label] = [vertex_a, vertex_b]
                 self.adjlist[vertex_a].append(vertex_b)
                 self.adjlist[vertex_b].append(vertex_a)
-                if self.debug:
+                if self.debug >= 1:
                     print(self.adjlist)
                     print(self.edges)
                 return "Inserida aresta: " + label + ". Referência: " + str(self.labels.index(label))
@@ -51,11 +51,11 @@ class GraphMaker:
             for d in delete:
                 self.labels.remove(d)
                 self.edges.pop(d)
-            if self.debug:
-                print(self.nodos)
-                print(self.adjlist)
-                print(self.labels)
-                print(self.edges)
+                if self.debug >= 1:
+                    print(self.nodos)
+                    print(self.adjlist)
+                    print(self.labels)
+                    print(self.edges)
             return "Vértice " + str(reference) + " removido."
         return "Vértice não encontrado no grafo."
 
@@ -64,21 +64,21 @@ class GraphMaker:
             e = self.labels[reference]
             self.labels.pop(reference)
             self.edges.pop(e)
-            if self.debug:
+            if self.debug >= 1:
                 print(self.labels)
                 print(self.edges)
             return "Aresta " + str(reference) + " removida."
-        return "Aresta " + str(reference) + "não encontrada no grafo."
+        return "Aresta " + str(reference) + " não encontrada no grafo."
 
     def check_adjacency(self, vertex_a, vertex_b):
         if vertex_a in self.nodos and vertex_b in self.nodos:
             adj_a = self.adjlist[vertex_a]
             adj_b = self.adjlist[vertex_b]
             if vertex_a in adj_b and vertex_b in adj_a:
+                if self.debug >= 1:
+                    print(adj_a)
+                    print(adj_b)
                 return "Verdadeiro. Os vértices " + vertex_a + " e " + vertex_b + " são adjacentes."
-            if self.debug:
-                print(adj_a)
-                print(adj_b)
             return "Falso. Os vértices " + vertex_a + " e " + vertex_b + " não são adjacentes."
         return "Vértice não encontrado no grafo"
 
@@ -98,7 +98,7 @@ class GraphMaker:
             vertices = self.edges[e]
             vertex_a = self.nodos.index(vertices[0])
             vertex_b = self.nodos.index(vertices[1])
-            if self.debug:
+            if self.debug >= 1:
                 print(e)
                 print(vertices)
             return "As referências dos vértices da aresta " + str(reference) + " são: " + str(vertex_a) + "," + str(vertex_b) + "."
