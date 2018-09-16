@@ -23,4 +23,4 @@ g.remove_vertex("A")
 # g.returnVertexElement() #TODO
 # g.return2VertexReferences() #TODO
 
-g.render_graph()
+g.draw_graph()

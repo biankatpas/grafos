@@ -9,7 +9,7 @@ if "DEBUG" in os.environ:
     DEBUG = int(os.environ["DEBUG"])
 
 W_SIZE = 1314
-H_SIZE = 768
+H_SIZE = 833
 g = Gui(None, title="Trb M1 - Grafos", size=(W_SIZE, H_SIZE))
 e = EventHandler(g, DEBUG)
 
@@ -26,7 +26,8 @@ labels = (
             "Verificar se o grafo é planar",
             "Busca em largura",
             "Busca em profundidade",
-            "PRIM"
+            "PRIM",
+            "Desenhar grafo",
          )
 
 g.add_button(labels[0], (0, (h * len(g.get_buttons()))), callback=e.on_insert_vertex)
@@ -41,9 +42,7 @@ g.add_button(labels[8], (0, (h * len(g.get_buttons()))), callback=e.on_check_pla
 g.add_button(labels[9], (0, (h * len(g.get_buttons()))), callback=e.on_breadth_search)
 g.add_button(labels[10],(0, (h * len(g.get_buttons()))), callback=e.on_depth_search)
 g.add_button(labels[11],(0, (h * len(g.get_buttons()))), callback=e.on_prim)
-
-# TODO: renderizar ao modificar o grafo
-g.render_graph()
+g.add_button(labels[12],(0, (h * len(g.get_buttons()))), callback=e.on_draw_graph)
 
 g.Show()
 g.main_loop()

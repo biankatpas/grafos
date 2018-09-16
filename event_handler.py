@@ -77,5 +77,9 @@ class EventHandler:
         ret = self.graph.prim()
         self.print_feedback(ret)
 
+    def on_draw_graph(self, evt):
+        self.graph.draw_graph()
+        self.gui.draw_graph()
+
     def print_feedback(self, message):
        self.gui.text_area.AppendText(message + "\n")

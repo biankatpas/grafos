@@ -4,7 +4,6 @@ from graphviz import Graph
 class GraphMaker:
     def __init__(self, debug=None):
         self.debug    = debug
-        self.graph    = Graph ('G', filename='graph.gv', format='png')
         self.nodos    = []
         self.adjlist  = {}
         self.labels   = []
@@ -17,9 +16,6 @@ class GraphMaker:
             self.adjlist[vertex] = []
             if self.debug:
                 print(self.adjlist)
-            # draw using graphviz
-            self.graph.node(vertex)
-            self.render_graph()
             return "Inserido vértice: " + vertex + ". Referência: " + str(self.nodos.index(vertex))
         return "Vértice já existe no grafo. Não inserido."
 
@@ -36,9 +32,6 @@ class GraphMaker:
                 if self.debug:
                     print(self.adjlist)
                     print(self.edges)
-                # draw using graphviz
-                self.graph.edge(vertex_a, vertex_b, label=label)
-                self.render_graph()
                 return "Inserida aresta: " + label + ". Referência: " + str(self.labels.index(label))
             return "Aresta já existe no grafo. Não inserida."
         return "Inserir os vértices primeiro."
@@ -112,12 +105,15 @@ class GraphMaker:
             return "As referências dos vértices da aresta " + str(reference) + " são: " + str(vertex_a) + "," + str(vertex_b) + "."
         else: return "Aresta " + str(reference) + " não encontrada no grafo."
 
-    # todo: percorrer as listas e gerar o desenho
-    def render_graph(self):
-        # render, save and show graph image
-        # self.graph.view()
-        # just render and save graph image
-        self.graph.render(view=False)
+    def draw_graph(self):
+        # draw graph using graphviz lib
+        gv = Graph('G', filename='graph.gv', format='png')
+        for nodo in self.nodos:
+            gv.node(nodo)
+        for e in self.edges:
+            gv.edge(e[0], e[1], label=e)
+        # self.graph.view()   # render, save and show graph image
+        gv.render(view=False) # just render and save graph image
 
     # todo: algoritmos
     def check_planar_graph(self):

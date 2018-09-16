@@ -15,7 +15,7 @@ class Gui(wx.Frame):
         self.buttons = []
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
         self.text_area.SetPosition((400, 585))
-        self.text_area.SetSize((914,195))
+        self.text_area.SetSize((914,260))
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
@@ -27,7 +27,7 @@ class Gui(wx.Frame):
         bt.Bind(wx.EVT_BUTTON,  callback)
         self.buttons.append(bt)
 
-    def render_graph(self, file="graph.gv.png"):
+    def draw_graph(self, file="graph.gv.png"):
         image = wx.Image(file)
         # TODO: rezise image
         # don't know why this doesn't work
