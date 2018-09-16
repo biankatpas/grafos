@@ -43,6 +43,7 @@ class Gui(wx.Frame):
         # self.image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
         self.bitmap = image.ConvertToBitmap()
         self.Bind(wx.EVT_PAINT, self.on_paint)
+        self.Refresh()
 
     def on_paint(self, evt):
         dc = wx.PaintDC(self)

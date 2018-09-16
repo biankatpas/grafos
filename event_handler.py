@@ -23,6 +23,7 @@ class EventHandler:
             vertex = value
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
 
     def on_insert_edge(self, evt):
         # ret = self.graph.insert_edge("A", "B", str('AB'))
@@ -48,6 +49,7 @@ class EventHandler:
             ret = self.graph.insert_edge(values[0], values[1], str(values[2]))
         else:
             ret = self.graph.insert_edge(values[0], values[1])
+        self.on_draw_graph(evt)
         self.print_feedback(ret)
 
     def on_remove_vertex(self, evt):
@@ -57,6 +59,7 @@ class EventHandler:
         if value is not None:
             ret = self.graph.remove_vertex(int(value))
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
 
     def on_remove_edge(self, evt):
         # ret = self.graph.remove_edge(0)
@@ -65,6 +68,7 @@ class EventHandler:
         if value is not None:
             ret = self.graph.remove_edge(int(value))
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
 
     def on_check_adjacency(self, evt):
         # ret = self.graph.check_adjacency("A", "C")
