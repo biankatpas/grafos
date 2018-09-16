@@ -36,12 +36,13 @@ g.addButton(labels[3] , (0, (h*len(g.getButtons()))), callback=e.OnRemoveEdge)
 g.addButton(labels[4] , (0, (h*len(g.getButtons()))), callback=e.OnCheck2VertexAdjacency)
 g.addButton(labels[5] , (0, (h*len(g.getButtons()))), callback=e.OnReturnEdgeElement)
 g.addButton(labels[6] , (0, (h*len(g.getButtons()))), callback=e.OnReturnVertexElement)
-g.addButton(labels[7] , (0, (h*len(g.getButtons()))), callback=e.OnReturn2VertexReferences)
+g.addButton(labels[7] , (0, (h*len(g.getButtons()))), callback=e.OnReturnEdge2VertexReferences)
 g.addButton(labels[8] , (0, (h*len(g.getButtons()))), callback=e.OnCheckPlanarGraph)
 g.addButton(labels[9] , (0, (h*len(g.getButtons()))), callback=e.OnBreadthSearch)
 g.addButton(labels[10], (0, (h*len(g.getButtons()))), callback=e.OnDepthSearch)
 g.addButton(labels[11], (0, (h*len(g.getButtons()))), callback=e.OnPRIM)
 
+# TODO: renderizar ao modificar o grafo
 g.renderGraph()
 
 g.Show()
