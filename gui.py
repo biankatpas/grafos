@@ -13,6 +13,11 @@ class Gui(wx.Frame):
         self.bitmap = wx.StaticBitmap(parent=self)
         self.button_id = 0
         self.buttons = []
+        self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
+        self.text_area.SetPosition((400, 650))
+        self.text_area.SetSize((914,130))
+        self.text_area.AppendText("Nothing have done yet!" + "\n\n")
+        self.text_area.SetToolTip('Saída')
 
 
     def addButton(self, text, pos, size=(400, 65), callback=None):
@@ -23,11 +28,13 @@ class Gui(wx.Frame):
         self.buttons.append(bt)
 
 
-    def addViewer(self, file="graph.gv.png"):
+    def renderGraph(self, file="graph.gv.png"):
         self.image = wx.Image(file)
-        self.image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
+        # don't know why this doesn't work
+        # self.image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
         self.bitmap = self.image.ConvertToBitmap()
         self.Bind(wx.EVT_PAINT, self.OnPaint)
+        print('fui chamado :)')
 
 
     def OnPaint(self, event):
