@@ -27,6 +27,15 @@ class Gui(wx.Frame):
         bt.Bind(wx.EVT_BUTTON,  callback)
         self.buttons.append(bt)
 
+    def show_input_dialog(self, title='Text Entry', text='Enter some text', value=""):
+        dlg = wx.TextEntryDialog(self, text, title)
+        dlg.SetValue(value)
+        if dlg.ShowModal() == wx.ID_OK:
+            # print('You entered: %s\n' % dlg.GetValue())
+            return dlg.GetValue()
+        dlg.Destroy()
+        return None
+
     def draw_graph(self, file="graph.gv.png"):
         image = wx.Image(file)
         # TODO: rezise image
@@ -42,6 +51,5 @@ class Gui(wx.Frame):
     def get_buttons(self):
         return self.buttons
 
-    @staticmethod
-    def main_loop():
+    def main_loop(self):
         app.MainLoop()

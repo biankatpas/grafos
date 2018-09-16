@@ -9,7 +9,6 @@ class GraphMaker:
         self.labels   = []
         self.edges    = {}
 
-
     def insert_vertex(self, vertex):
         if vertex not in self.nodos:
             self.nodos.append(vertex)
@@ -111,8 +110,8 @@ class GraphMaker:
         for nodo in self.nodos:
             gv.node(nodo)
         for e in self.edges:
-            gv.edge(e[0], e[1], label=e)
-        # self.graph.view()   # render, save and show graph image
+            gv.edge(self.edges[e][0], self.edges[e][1], label=e)
+        # gv.view()               # render, save and show graph image
         gv.render(view=False) # just render and save graph image
 
     # todo: algoritmos
