@@ -6,6 +6,7 @@ class EventHandler:
         self.graph = GraphMaker(debug)
 
     # TODO: pedir todos os dados para o usuario
+
     def OnInsertVertex(self, evt):
         vertex = "A"
         ret = self.graph.insertVertex(vertex)
@@ -40,15 +41,21 @@ class EventHandler:
     def OnReturnEdgeElement(self, evt):
         ret = self.graph.returnEdgeElement(0)
         self.print_feedback(ret)
+        ret = self.graph.returnEdgeElement(1)
+        self.print_feedback(ret)
 
     def OnReturnVertexElement(self, evt):
         ret = self.graph.returnVertexElement(0)
         self.print_feedback(ret)
         ret = self.graph.returnVertexElement(1)
         self.print_feedback(ret)
+        ret = self.graph.returnVertexElement(3)
+        self.print_feedback(ret)
 
     def OnReturnEdge2VertexReferences(self, evt):
         ret = self.graph.return2EdgeVertexReferences(0)
+        self.print_feedback(ret)
+        ret = self.graph.return2EdgeVertexReferences(1)
         self.print_feedback(ret)
 
     def print_feedback(self, message):
