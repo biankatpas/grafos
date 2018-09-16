@@ -20,27 +20,28 @@ class Gui(wx.Frame):
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
 
-    def addButton(self, text, pos, size=(400, 65), callback=None):
+    def add_button(self, text, pos, size=(400, 65), callback=None):
         self.button_id += 1
         bt = wx.Button(self, self.button_id, text, pos=pos, name=text, size=size)
         bt.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         bt.Bind(wx.EVT_BUTTON,  callback)
         self.buttons.append(bt)
 
-    def renderGraph(self, file="graph.gv.png"):
-        self.image = wx.Image(file)
+    def render_graph(self, file="graph.gv.png"):
+        image = wx.Image(file)
         # TODO: rezise image
         # don't know why this doesn't work
         # self.image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
-        self.bitmap = self.image.ConvertToBitmap()
-        self.Bind(wx.EVT_PAINT, self.OnPaint)
+        self.bitmap = image.ConvertToBitmap()
+        self.Bind(wx.EVT_PAINT, self.on_paint)
 
-    def OnPaint(self, event):
+    def on_paint(self):
         dc = wx.PaintDC(self)
         dc.DrawBitmap(self.bitmap, 400, 0)
 
-    def getButtons(self):
+    def get_buttons(self):
         return self.buttons
 
-    def MainLooop(self):
+    @staticmethod
+    def main_loop():
         app.MainLoop()
