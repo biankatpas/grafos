@@ -1,4 +1,5 @@
 import wx
+import wx.lib.scrolledpanel as scrolled
 import numpy as np
 import PIL
 from PIL import Image
@@ -13,16 +14,18 @@ class Gui(wx.Frame):
         self.SetMaxSize(self.GetSize())
         self.SetMinSize(self.GetSize())
         self.SetBackgroundColour(colour=wx.WHITE)
-        self.bitmap = wx.StaticBitmap(parent=self)
-        self.factor = 1
-        self.button_id = 0
-        self.buttons = []
+        self.scrolled_panel = scrolled.ScrolledPanel(self, -1, size=(914, 573), pos=(400,0) , style=wx.SUNKEN_BORDER)
+        self.scrolled_panel.SetBackgroundColour(wx.WHITE)
+        self.bitmap = wx.StaticBitmap(parent=self.scrolled_panel)
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
         self.text_area.SetPosition((400, 585))
         self.text_area.SetSize((914,260))
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
+        self.factor = 1
+        self.button_id = 0
+        self.buttons = []
 
     def add_button(self, text, pos, size=(400, 65), callback=None):
         self.button_id += 1
@@ -48,8 +51,8 @@ class Gui(wx.Frame):
         myWxImage = wx.Image(apilr.size[0], apilr.size[1])
         myWxImage.SetData(apilr.convert('RGB').tobytes())
         self.bitmap = myWxImage.ConvertToBitmap()
-        self.Bind(wx.EVT_PAINT, self.on_paint)
-        self.Refresh()
+        self.scrolled_panel.Bind(wx.EVT_PAINT, self.on_paint)
+        self.scrolled_panel.Refresh()
 
     def imageToPil(self, myWxImage):
         w, h = myWxImage.GetWidth(), myWxImage.GetHeight()
@@ -59,8 +62,8 @@ class Gui(wx.Frame):
         return myPilImage
 
     def on_paint(self, evt):
-        dc = wx.PaintDC(self)
-        dc.DrawBitmap(self.bitmap, 400, 0)
+        dc = wx.PaintDC(self.scrolled_panel)
+        dc.DrawBitmap(self.bitmap, (0, 0))
 
     def on_zoom_in(self, evt):
         self.factor += 0.25
