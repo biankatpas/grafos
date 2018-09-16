@@ -19,10 +19,13 @@ class Gui(wx.Frame):
         self.bitmap = wx.StaticBitmap(parent=self.scrolled_panel)
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
         self.text_area.SetPosition((400, 585))
-        self.text_area.SetSize((914,260))
+        self.text_area.SetSize((914,268))
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
+        self.hslider = wx.Slider(self, -1, 100, 0, 250, size=(394, -1), style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS)
+        self.hslider.SetPosition((0,780))
+        self.hslider.Bind(wx.EVT_SCROLL, self.on_scroll)
         self.factor = 1
         self.button_id = 0
         self.buttons = []
@@ -65,12 +68,9 @@ class Gui(wx.Frame):
         dc = wx.PaintDC(self.scrolled_panel)
         dc.DrawBitmap(self.bitmap, (0, 0))
 
-    def on_zoom_in(self, evt):
-        self.factor += 0.25
-        self.draw_graph()
-
-    def on_zoom_out(self, evt):
-        self.factor -= 0.25
+    def on_scroll(self, evt):
+        ival = self.hslider.GetValue()
+        self.factor = ival/100
         self.draw_graph()
 
     def get_buttons(self):

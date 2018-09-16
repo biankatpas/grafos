@@ -9,7 +9,7 @@ if "DEBUG" in os.environ:
     DEBUG = int(os.environ["DEBUG"])
 
 W_SIZE = 1320
-H_SIZE = 833
+H_SIZE = 841
 g = Gui(None, title="Trb M1 - Grafos", size=(W_SIZE, H_SIZE))
 e = EventHandler(g, DEBUG)
 
@@ -43,9 +43,6 @@ g.add_button(labels[8], (0, (h * len(g.get_buttons()))), callback=e.on_check_pla
 g.add_button(labels[9], (0, (h * len(g.get_buttons()))), callback=e.on_breadth_search)
 g.add_button(labels[10],(0, (h * len(g.get_buttons()))), callback=e.on_depth_search)
 g.add_button(labels[11],(0, (h * len(g.get_buttons()))), callback=e.on_prim)
-
-g.add_button(labels[12],(0  , (h * 12)), callback=g.on_zoom_in , size=(200, 65))
-g.add_button(labels[13],(200, (h * 12)), callback=g.on_zoom_out, size=(200, 65))
 
 g.Show()
 g.main_loop()
