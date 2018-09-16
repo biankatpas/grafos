@@ -40,7 +40,7 @@ class Gui(wx.Frame):
         image = wx.Image(file)
         # TODO: rezise image
         # don't know why this doesn't work
-        self.image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
+        image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
         self.bitmap = image.ConvertToBitmap()
         self.Bind(wx.EVT_PAINT, self.on_paint)
         self.Refresh()

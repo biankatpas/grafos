@@ -17,6 +17,7 @@ class EventHandler:
             vertex = "C"
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Inserir vértice", text="Informe o Vértice: ")
             if value is not None:
@@ -33,6 +34,7 @@ class EventHandler:
             self.print_feedback(ret)
             ret = self.graph.insert_edge("A", "C", str('AC'))
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
         else:
             values = []
             v = self.gui.show_input_dialog(title="Inserir aresta", text="Informe o 1o vértice: ")
@@ -55,6 +57,7 @@ class EventHandler:
         if self.debug == 2:
             ret = self.graph.remove_vertex(0)
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Remover vértice", text="Informe a referência do vértice")
             if value is not None:
@@ -66,6 +69,7 @@ class EventHandler:
         if self.debug == 2:
             ret = self.graph.remove_edge(0)
             self.print_feedback(ret)
+            self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Remover aresta", text="Informe a referência da aresta")
             if value is not None:

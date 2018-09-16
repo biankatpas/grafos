@@ -56,9 +56,9 @@ class GraphMaker:
                     print(self.adjlist)
                     print(self.labels)
                     print(self.edges)
-            message = "Vértice " + str(reference) + " removido.\nAtenção: referências dos vértices atualizadas.\n"
+            message = "Vértice " + str(reference) + " removido.\nAtenção: referências dos vértices atualizadas."
             for i in range(0, len(self.nodos)):
-                message = message + self.return_vertex_element(i) + "\n"
+                message = message + "\n" + self.return_vertex_element(i)
             return message
         return "Vértice não encontrado no grafo."
 
@@ -70,9 +70,9 @@ class GraphMaker:
             if self.debug >= 1:
                 print(self.labels)
                 print(self.edges)
-            message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas.\n"
+            message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas."
             for i in range(0, len(self.labels)):
-                message = message + self.return_edge_element(i) + "\n"
+                message = message + "\n" + self.return_edge_element(i)
             return message
         return "Aresta " + str(reference) + " não encontrada no grafo."
 
