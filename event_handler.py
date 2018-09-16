@@ -6,13 +6,18 @@ class EventHandler:
         self.graph = GraphMaker(debug)
 
     def OnInsertVertex(self, evt):
-        vertex = "T"
+        vertex = "A"
+        ret = self.graph.insertVertex(vertex)
+        self.print_feedback("Inserido vértice: " + vertex + ". Referência", ret)
+        self.gui.renderGraph()
+
+        vertex = "B"
         ret = self.graph.insertVertex(vertex)
         self.print_feedback("Inserido vértice: " + vertex + ". Referência", ret)
         self.gui.renderGraph()
 
     def OnInsertEdge(self, evt):
-        ret = self.graph.insertEdge("T", "t2", str(11))
+        ret = self.graph.insertEdge("A", "B", str('AB'))
         self.print_feedback("Inserida aresta", ret)
         self.gui.renderGraph()
 
