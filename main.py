@@ -27,7 +27,8 @@ labels = (
             "Busca em largura",
             "Busca em profundidade",
             "PRIM",
-            "Desenhar grafo",
+            "ZoomIn",
+            "ZoomOut"
          )
 
 g.add_button(labels[0], (0, (h * len(g.get_buttons()))), callback=e.on_insert_vertex)
@@ -42,7 +43,9 @@ g.add_button(labels[8], (0, (h * len(g.get_buttons()))), callback=e.on_check_pla
 g.add_button(labels[9], (0, (h * len(g.get_buttons()))), callback=e.on_breadth_search)
 g.add_button(labels[10],(0, (h * len(g.get_buttons()))), callback=e.on_depth_search)
 g.add_button(labels[11],(0, (h * len(g.get_buttons()))), callback=e.on_prim)
-g.add_button(labels[12],(0, (h * len(g.get_buttons()))), callback=e.on_draw_graph)
+
+g.add_button(labels[12],(0  , (h * 12)), callback=g.on_zoom_in , size=(200, 65))
+g.add_button(labels[13],(200, (h * 12)), callback=g.on_zoom_out, size=(200, 65))
 
 g.Show()
 g.main_loop()

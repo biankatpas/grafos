@@ -1,4 +1,7 @@
 import wx
+import numpy as np
+import PIL
+from PIL import Image
 
 app = wx.App()
 
@@ -11,6 +14,7 @@ class Gui(wx.Frame):
         self.SetMinSize(self.GetSize())
         self.SetBackgroundColour(colour=wx.WHITE)
         self.bitmap = wx.StaticBitmap(parent=self)
+        self.factor = 1
         self.button_id = 0
         self.buttons = []
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
@@ -38,16 +42,33 @@ class Gui(wx.Frame):
 
     def draw_graph(self, file="graph.gv.png"):
         image = wx.Image(file)
-        # TODO: rezise image
-        # don't know why this doesn't work
-        image.Scale(width=925, height=779, quality=wx.IMAGE_QUALITY_HIGH)
-        self.bitmap = image.ConvertToBitmap()
+        apil = self.imageToPil(image)
+        width, height = apil.size
+        apilr = apil.resize((int(width * self.factor), int(height * self.factor)), PIL.Image.NEAREST)
+        myWxImage = wx.Image(apilr.size[0], apilr.size[1])
+        myWxImage.SetData(apilr.convert('RGB').tobytes())
+        self.bitmap = myWxImage.ConvertToBitmap()
         self.Bind(wx.EVT_PAINT, self.on_paint)
         self.Refresh()
+
+    def imageToPil(self, myWxImage):
+        w, h = myWxImage.GetWidth(), myWxImage.GetHeight()
+        buf  = myWxImage.GetDataBuffer()
+        arr  = np.frombuffer(buf, dtype='uint8')
+        myPilImage = PIL.Image.frombytes("RGB", (w, h), arr.tobytes('C'))
+        return myPilImage
 
     def on_paint(self, evt):
         dc = wx.PaintDC(self)
         dc.DrawBitmap(self.bitmap, 400, 0)
+
+    def on_zoom_in(self, evt):
+        self.factor += 0.25
+        self.draw_graph()
+
+    def on_zoom_out(self, evt):
+        self.factor -= 0.25
+        self.draw_graph()
 
     def get_buttons(self):
         return self.buttons
