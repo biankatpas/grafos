@@ -7,14 +7,14 @@ if "DEBUG" in os.environ:
 
 g = GrafoMaker(debug=DEBUG)
 
-print(g.insertVertex("A"))
-print(g.insertVertex("B"))
-print(g.insertVertex("C"))
+print(g.insert_vertex("A"))
+print(g.insert_vertex("B"))
+print(g.insert_vertex("C"))
 
-print(g.insertEdge("A", "B", "AB"))
-print(g.insertEdge("A", "C", "AC"))
+print(g.insert_edge("A", "B", "AB"))
+print(g.insert_edge("A", "C", "AC"))
 
-g.removeVertex("A")
+g.remove_vertex("A")
 # g.removeEdge() #TODO
 
 # g.checkAdjacency() #TODO

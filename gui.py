@@ -35,7 +35,7 @@ class Gui(wx.Frame):
         self.bitmap = image.ConvertToBitmap()
         self.Bind(wx.EVT_PAINT, self.on_paint)
 
-    def on_paint(self):
+    def on_paint(self, evt):
         dc = wx.PaintDC(self)
         dc.DrawBitmap(self.bitmap, 400, 0)
 
