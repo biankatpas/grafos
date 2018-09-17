@@ -131,7 +131,7 @@ class GraphMaker:
         return "to-do"
 
     def breadth_search(self, reference):
-        # self.clear()
+        self.clear()
         aux = [self.nodes[reference]]
         self.color[self.nodes[reference]] = 'Blue'
         while 0 != len(aux):
@@ -147,12 +147,12 @@ class GraphMaker:
         return "Busca em largura em execução. Saída no console."
     # todo: conferir a msg de saída
     def clear(self):
-        for i in range(0, (len(self.color))):
+        for i in self.nodes:
             self.color[i] = 'Black'
         self.message = ""
 
     def call_depth_search(self, reference):
-        # self.clear()
+        self.clear()
         return self.depth_search(reference)
 
     def depth_search(self, reference):
