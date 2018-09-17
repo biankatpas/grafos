@@ -144,7 +144,8 @@ class EventHandler:
 
     def on_depth_search(self, evt):
         value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
-        ret = self.graph.depth_search(int(value))
+        # ret = self.graph.depth_search(int(value))
+        ret = self.graph.call_depth_search(int(value))
         self.print_feedback(ret)
 
     def on_prim(self, evt):

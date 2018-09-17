@@ -44,6 +44,7 @@ class GraphMaker:
         if reference < len(self.nodes):
             vertex = self.nodes[reference]
             self.nodes.pop(reference)
+            self.color.pop(vertex)
             self.adjlist.pop(vertex)
             for v in self.adjlist:
                 if vertex in self.adjlist[v]:
@@ -130,6 +131,7 @@ class GraphMaker:
         return "to-do"
 
     def breadth_search(self, reference):
+        # self.clear()
         aux = [self.nodes[reference]]
         self.color[self.nodes[reference]] = 'Blue'
         while 0 != len(aux):
@@ -139,28 +141,39 @@ class GraphMaker:
                 aux.pop(0)
             else:
                 self.color[v] = 'Blue'
+                print(self.color)
                 aux.append(v)
-        return "Vértices acessados: " + str(self.color)
+        # return "Vértices acessados: " + str(self.color)
+        return "Busca em largura em execução. Saída no console."
+    # todo: conferir a msg de saída
+    def clear(self):
+        for i in range(0, (len(self.color))):
+            self.color[i] = 'Black'
+        self.message = ""
+
+    def call_depth_search(self, reference):
+        # self.clear()
+        return self.depth_search(reference)
 
     def depth_search(self, reference):
-        print('reference',str(reference))
+        # print('reference',str(reference))
         self.color[self.nodes[reference]] = 'Red'
         for i in self.adjlist[self.nodes[reference]]:
             if self.color[i] == 'Black':
                 self.depth_search(self.nodes.index(i))
         self.color[self.nodes[reference]] = 'Blue'
-        print(self.color)
-        self.message = self.message + "Vértice sendo acessado: " + str(reference) + "\n{  "
+        # print(self.color)
+        # self.message = self.message + "Vértice sendo acessado: " + str(reference) + "\n{  "
         # message = str(reference) + "\n{  "
-        keys = [*self.color]
-        for k in keys:
-            self.message = self.message + "" + k + ": " + self.color[k] + "  "
+        # keys = [*self.color]
+        # for k in keys:
+            # self.message = self.message + "" + k + ": " + self.color[k] + "  "
             # message = message + "" + k + ": " + self.color[k] + "  "
-        self.message = self.message + "}\n"
+        # self.message = self.message + "}\n"
         # message = message + "}\n"
         print(self.color)
         # self.gui.show_message_dialog("Vértice sendo acessado", message)
-        return self.message
+        return "Busca em profundidade em execução. Saída no console."
         # return "Busca em profundidade em execução.\n" + message
 
     # todo
