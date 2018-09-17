@@ -3,14 +3,15 @@ from graphviz import Graph
 
 
 class GraphMaker:
-    def __init__(self, debug=None):
+    def __init__(self, gui, debug=None):
         self.debug    = debug
-        self.nodes    = []
-        self.adjlist  = {}
-        self.weights  = []
-        self.edges    = {}
-        self.color    = {}  #Usado para Depth Search e quando insere vertex coloca como preto
-        self.message  = ""
+        self.gui      = gui
+        self.nodes    = []  # aux
+        self.adjlist  = {}  # dict de adjs
+        self.weights  = []  # aux
+        self.edges    = {}  # dict de arestas
+        self.color    = {}  # Usado para Depth Search e quando insere o vertex coloca como preto
+        self.message  = ""  # Usado para retornar msg no metodo recursivo (Depth Search)
 
     def insert_vertex(self, vertex):
         if vertex not in self.nodes:
@@ -124,7 +125,7 @@ class GraphMaker:
         # gv.view()           # render, save and show graph image
         gv.render(view=False) # just render and save graph image
 
-    # todo: algoritmos
+    # todo
     def check_planar_graph(self):
         return "to-do"
 
@@ -142,7 +143,7 @@ class GraphMaker:
         return "Vértices acessados: " + str(self.color)
 
     def depth_search(self, reference):
-        print(reference)
+        print('reference',str(reference))
         self.color[self.nodes[reference]] = 'Red'
         for i in self.adjlist[self.nodes[reference]]:
             if self.color[i] == 'Black':
@@ -150,12 +151,19 @@ class GraphMaker:
         self.color[self.nodes[reference]] = 'Blue'
         print(self.color)
         self.message = self.message + "Vértice sendo acessado: " + str(reference) + "\n{  "
+        # message = str(reference) + "\n{  "
         keys = [*self.color]
         for k in keys:
             self.message = self.message + "" + k + ": " + self.color[k] + "  "
+            # message = message + "" + k + ": " + self.color[k] + "  "
         self.message = self.message + "}\n"
+        # message = message + "}\n"
+        print(self.color)
+        # self.gui.show_message_dialog("Vértice sendo acessado", message)
         return self.message
+        # return "Busca em profundidade em execução.\n" + message
 
+    # todo
     def prim(self, reference):
         aux = []
         for i in self.nodes:
@@ -172,11 +180,11 @@ class GraphMaker:
                 aux.sort()
                 aux.remove(u)
             else:
-                w = self.getArestas(u, v)
+                w = self.get_edges(u, v)
                 print(w)
                 if aux.count(v) > 0:
                     print("TESTE")
-        return "vitor"
+        return "to-do"
 
     def get_adjacent(self, u):
         for i in self.adjlist[u]:
@@ -185,7 +193,7 @@ class GraphMaker:
         else:
             return None
 
-    def getArestas(self, u, v):
+    def get_edges(self, u, v):
         for i in self.edges:
             if u == self.edges[i][0]:
                 if v == self.edges[i][1]:

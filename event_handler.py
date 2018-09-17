@@ -4,7 +4,7 @@ class EventHandler:
     def __init__(self, gui, debug=None):
         self.gui = gui
         self.debug = debug
-        self.graph = GraphMaker(self.debug)
+        self.graph = GraphMaker(self.gui, self.debug)
 
     def on_insert_vertex(self, evt):
         if self.debug == 2:
@@ -148,9 +148,9 @@ class EventHandler:
         self.print_feedback(ret)
 
     def on_prim(self, evt):
-        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
-        ret = self.graph.prim(int(value))
-        self.print_feedback(ret)
+        # value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        # ret = self.graph.prim(int(value))
+        self.print_feedback('to-do')
 
     def on_draw_graph(self, evt):
         self.graph.draw_graph()
