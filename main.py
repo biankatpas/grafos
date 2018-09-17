@@ -8,8 +8,8 @@ DEBUG = 0
 if "DEBUG" in os.environ:
     DEBUG = int(os.environ["DEBUG"])
 
-W_SIZE = 1320
-H_SIZE = 841
+W_SIZE = 1320  #1320
+H_SIZE = 841   #841
 g = Gui(None, title="Trb M1 - Grafos", size=(W_SIZE, H_SIZE))
 e = EventHandler(g, DEBUG)
 

@@ -8,10 +8,12 @@ class GraphMaker:
         self.adjlist  = {}
         self.labels   = []
         self.edges    = {}
+        self.color    = {}  #Usado para Depth Search e quando insere vertex coloca como preto
 
     def insert_vertex(self, vertex):
         if vertex not in self.nodos:
             self.nodos.append(vertex)
+            self.color[vertex] = 'Black'
             self.adjlist[vertex] = []
             if self.debug >= 1:
                 print(self.adjlist)
@@ -124,11 +126,65 @@ class GraphMaker:
     def check_planar_graph(self):
         return "vitor"
 
-    def breadth_search(self):
+    def breadth_search(self, reference):
+        aux = [self.nodos[reference]]
+        self.color[self.nodos[reference]] = 'Blue'
+        while 0 != len(aux):
+            u = aux[0]
+            v = self.getAdjacente(u)
+            if v is None:
+                aux.pop(0)
+            else:
+                self.color[v] = 'Blue'
+                aux.append(v)
+        return "Vértices acessados: " + str(self.color)
+
+    def depth_search(self, reference):
+        message = ""
+        print(reference)
+        self.color[self.nodos[reference]] = 'Red'
+        for i in self.adjlist[self.nodos[reference]]:
+            if self.color[i] == 'Black':
+                self.depth_search(self.nodos.index(i))
+        self.color[self.nodos[reference]] = 'Blue'
+        message += message + "Vértices sendo acessados: (referência) - " + str(reference) + " : " + str(self.color)
+        print(message)
+        return message
+
+    def prim(self, reference):
+        aux = []
+        for i in self.nodos:
+            aux.append(i)
+        aux.sort()
+
+        while len(aux) != 0:
+            u = aux[0]
+            v = self.getAdjacente(u)
+
+            if v is None:
+                for i in aux:
+                    self.color[i] = 'Black'
+                aux.sort()
+                aux.remove(u)
+            else:
+                w = self.getArestas(u, v)
+                print(w)
+                if aux.count(v) > 0:
+                    print("TESTE")
         return "vitor"
 
-    def depth_search(self):
-        return "vitor"
+    def getAdjacente(self, u):
+        for i in self.adjlist[u]:
+            if self.color[i] == 'Black':
+                return i
+        else:
+            return None
 
-    def prim(self):
-        return "vitor"
+    def getArestas(self, u, v):
+        for i in self.edges:
+            if u == self.edges[i][0]:
+                if v == self.edges[i][1]:
+                    return self.edges[i][1]
+                return self.edges[i][0]
+        else:
+            return None

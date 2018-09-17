@@ -137,15 +137,18 @@ class EventHandler:
         self.print_feedback(ret)
 
     def on_breadth_search(self, evt):
-        ret = self.graph.breadth_search()
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        ret = self.graph.breadth_search(int(value))
         self.print_feedback(ret)
 
     def on_depth_search(self, evt):
-        ret = self.graph.depth_search()
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        ret = self.graph.depth_search(int(value))
         self.print_feedback(ret)
 
     def on_prim(self, evt):
-        ret = self.graph.prim()
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        ret = self.graph.prim(int(value))
         self.print_feedback(ret)
 
     def on_draw_graph(self, evt):
