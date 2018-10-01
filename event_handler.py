@@ -4,7 +4,8 @@ class EventHandler:
     def __init__(self, gui, debug=None):
         self.gui = gui
         self.debug = debug
-        self.graph = GraphMaker(self.gui, self.debug)
+        self.dirigido = False
+        self.graph = GraphMaker(self.dirigido, self.debug)
 
     def on_insert_vertex(self, evt):
         if self.debug == 2:
@@ -17,22 +18,26 @@ class EventHandler:
             vertex = "C"
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
+            vertex = "D"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
             self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Inserir vértice", text="Informe o Vértice: ")
             if value is not None:
-                vertex = value
-                ret = self.graph.insert_vertex(vertex)
+                ret = self.graph.insert_vertex(value)
                 self.print_feedback(ret)
                 self.on_draw_graph(evt)
 
     def on_insert_edge(self, evt):
         if self.debug == 2:
-            ret = self.graph.insert_edge("A", "B", str('AB'))
+            ret = self.graph.insert_edge("A", "B", 1, str('AB'))
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "A")
+            ret = self.graph.insert_edge("A", "C", 1)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("A", "C", str('AC'))
+            ret = self.graph.insert_edge("B", "D", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("B", "A", 1)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
         else:
@@ -43,13 +48,16 @@ class EventHandler:
             v = self.gui.show_input_dialog(title="Inserir aresta", text="Informe o 2o vértice: ")
             if v is not None:
                 values.append(v)
+            v = self.gui.show_input_dialog(title="Inserir aresta", text="Informe o peso: ")
+            if v is not None:
+                    values.append(v)
             v = self.gui.show_input_dialog(title="Inserir aresta", text="Informe a aresta: ")
             if v is not None:
                 values.append(v)
-            if len(values) > 2:
-                ret = self.graph.insert_edge(values[0], values[1], str(values[2]))
+            if len(values) > 3:
+                ret = self.graph.insert_edge(values[0], values[1], values[2], str(values[3]))
             else:
-                ret = self.graph.insert_edge(values[0], values[1])
+                ret = self.graph.insert_edge(values[0], values[1], values[2])
             self.on_draw_graph(evt)
             self.print_feedback(ret)
 
@@ -61,7 +69,7 @@ class EventHandler:
         else:
             value = self.gui.show_input_dialog(title="Remover vértice", text="Informe a referência do vértice")
             if value is not None:
-                ret = self.graph.remove_vertex(int(value))
+                ret = self.graph.remove_vertex(value)
                 self.print_feedback(ret)
                 self.on_draw_graph(evt)
 
@@ -103,7 +111,7 @@ class EventHandler:
         else:
             value = self.gui.show_input_dialog(title="Retornar elemento da aresta", text="Informe a referência da aresta")
             if value is not None:
-                ret = self.graph.return_edge_element(int(value))
+                ret = self.graph.return_edge_element(value)
                 self.print_feedback(ret)
 
     def on_return_vertex_element(self, evt):
@@ -117,7 +125,7 @@ class EventHandler:
         else:
             value = self.gui.show_input_dialog(title="Retornar elemento do vértice", text="Informe a referência do vértice")
             if value is not None:
-                ret = self.graph.return_vertex_element(int(value))
+                ret = self.graph.return_vertex_element(value)
                 self.print_feedback(ret)
 
     def on_return_vertices_references_from_edge(self, evt):
@@ -129,7 +137,7 @@ class EventHandler:
         else:
             value = self.gui.show_input_dialog(title="Retornar referência dos vértices da aresta", text="Informe a referência da aresta")
             if value is not None:
-                ret = self.graph.return_vertices_references_from_edge(int(value))
+                ret = self.graph.return_vertices_references_from_edge(value)
                 self.print_feedback(ret)
 
     def on_check_planar_graph(self, evt):
@@ -137,21 +145,19 @@ class EventHandler:
         self.print_feedback(ret)
 
     def on_breadth_search(self, evt):
-        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
-        ret = self.graph.breadth_search(int(value))
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        ret = self.graph.breadth_search(value)
         self.print_feedback(ret)
-        self.graph.clear_message()
 
     def on_depth_search(self, evt):
-        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
-        # ret = self.graph.depth_search(int(value))
-        ret = self.graph.call_depth_search(int(value))
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        ret = self.graph.depth_search(value)
         self.print_feedback(ret)
 
     def on_prim(self, evt):
-        # value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
-        # ret = self.graph.prim(int(value))
-        self.print_feedback('to-do')
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        ret = self.graph.prim(value)
+        self.print_feedback(ret)
 
     def on_draw_graph(self, evt):
         self.graph.draw_graph()
