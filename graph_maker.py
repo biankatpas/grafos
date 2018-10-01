@@ -144,6 +144,7 @@ class GraphMaker:
     # TODO
     def depth_search(self, vertex):
         # print('reference',str(reference))
+        print("teste para o git")
         print(vertex)
         self.vertices[vertex].color = 'Red'
         print(self.vertices[vertex].adj)
