@@ -89,7 +89,7 @@ class EventHandler:
         if self.debug == 2:
             ret = self.graph.check_adjacency("A", "C")
             self.print_feedback(ret)
-            ret = self.graph.check_adjacency("A", "B")
+            ret = self.graph.check_adjacency("C", "D")
             self.print_feedback(ret)
         else:
             values = []
@@ -104,9 +104,9 @@ class EventHandler:
 
     def on_return_edge_element(self, evt):
         if self.debug == 2:
-            ret = self.graph.return_edge_element(0)
+            ret = self.graph.return_edge_element('AB')
             self.print_feedback(ret)
-            ret = self.graph.return_edge_element(1)
+            ret = self.graph.return_edge_element('AE')
             self.print_feedback(ret)
         else:
             value = self.gui.show_input_dialog(title="Retornar elemento da aresta", text="Informe a referência da aresta")
@@ -116,11 +116,11 @@ class EventHandler:
 
     def on_return_vertex_element(self, evt):
         if self.debug == 2:
-            ret = self.graph.return_vertex_element(0)
+            ret = self.graph.return_vertex_element('A')
             self.print_feedback(ret)
-            ret = self.graph.return_vertex_element(1)
+            ret = self.graph.return_vertex_element('B')
             self.print_feedback(ret)
-            ret = self.graph.return_vertex_element(3)
+            ret = self.graph.return_vertex_element('E')
             self.print_feedback(ret)
         else:
             value = self.gui.show_input_dialog(title="Retornar elemento do vértice", text="Informe a referência do vértice")
@@ -130,9 +130,9 @@ class EventHandler:
 
     def on_return_vertices_references_from_edge(self, evt):
         if self.debug == 2:
-            ret = self.graph.return_vertices_references_from_edge(0)
+            ret = self.graph.return_vertices_references_from_edge('AB')
             self.print_feedback(ret)
-            ret = self.graph.return_vertices_references_from_edge(1)
+            ret = self.graph.return_vertices_references_from_edge('AE')
             self.print_feedback(ret)
         else:
             value = self.gui.show_input_dialog(title="Retornar referência dos vértices da aresta", text="Informe a referência da aresta")

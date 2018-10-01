@@ -1,5 +1,4 @@
 import os
-
 from gui import Gui
 from event_handler import EventHandler
 

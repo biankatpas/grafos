@@ -75,21 +75,21 @@ class GraphMaker:
 
     def return_edge_element(self, edge):
         if edge in self.edges:
-            return "Elemento armazenado na aresta " + edge + " é: " + edge + " e tem peso: " + self.edges[edge].peso
-        return "Aresta " + edge + " não encontrada no grafo."
+            return "Elemento armazenado na aresta " + str(edge) + " é: " + str(edge) + " e tem peso: " + str(self.edges[edge].peso)
+        return "Aresta " + str(edge) + " não encontrada no grafo."
 
     def return_vertex_element(self, vertex):
         if vertex in self.vertices:
-            return "Elemento armazenado no vértice " + vertex + " é: " + self.vertices[vertex].name
-        return "Vértice " + vertex + " não encontrado no grafo."
+            return "Elemento armazenado no vértice " + str(vertex) + " é: " + str(self.vertices[vertex].name)
+        return "Vértice " + str(vertex) + " não encontrado no grafo."
 
     def return_vertices_references_from_edge(self, edge):
         if edge in self.edges:
             e = self.edges[edge]
             if self.debug >= 1:
                 self.debugVersion()
-            return "As referências dos vértices da aresta " + edge + " são: " + e.origem + ", " + e.destino + "."
-        return "Aresta " + edge + " não encontrada no grafo."
+            return "As referências dos vértices da aresta " + str(edge) + " são: " + str(e.origem) + ", " + str(e.destino) + "."
+        return "Aresta " + str(edge) + " não encontrada no grafo."
 
     def draw_graph(self):
         # draw graph using graphviz lib
