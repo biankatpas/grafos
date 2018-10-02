@@ -2,7 +2,7 @@
 class Vertice:
     def __init__(self, name):
         self.name = name
-        self.color = 'Black'
+        self.color = 'white'
         self.adj = []
 
     def addAdjVertex(self, vertex):

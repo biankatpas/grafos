@@ -2,6 +2,7 @@ from graphviz import Graph
 from graphviz import Digraph
 from vertice import Vertice
 from aresta import Aresta
+import time
 
 class GraphMaker:
     def __init__(self, dirigido, debug=None):
@@ -98,7 +99,7 @@ class GraphMaker:
         else:
             gv = Graph('G', filename='graph.gv', format='png')
         for v in self.vertices:
-            gv.node(self.vertices[v].name)
+            gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso))
         # gv.view()            # render, save and show graph image
@@ -118,19 +119,21 @@ class GraphMaker:
     def breadth_search(self, vertex):
         self.clear()
         aux = [self.vertices[vertex].name]
-        self.vertices[vertex].color = 'Blue'
+        self.vertices[vertex].color = 'blue'
         while 0 != len(aux):
             u = aux[0]
             v = self.getAdjacente(u)
             if v is None:
                 aux.pop(0)
             else:
-                self.vertices[v].color = 'Blue'
+                self.vertices[v].color = 'blue'
                 aux.append(v)
-            self.vertices[u].color = 'Blue'
+            self.vertices[u].color = 'blue'
+            time.sleep(2)
             if self.debug == 2:
                 print(aux)
                 self.debugVersion()
+                self.draw_graph()
         message = "Vértices acessados: "
         for i in self.vertices:
              message += self.vertices[i].color
@@ -146,14 +149,14 @@ class GraphMaker:
         # print('reference',str(reference))
         print("teste para o git")
         print(vertex)
-        self.vertices[vertex].color = 'Red'
+        self.vertices[vertex].color = 'red'
         print(self.vertices[vertex].adj)
         for i in self.vertices[vertex].adj:
             print(i)
-            if self.vertices[i].color == 'Black':
+            if self.vertices[i].color == 'white':
                 print()
                 self.depth_search(self.vertices[i].name)
-        self.vertices[vertex] = 'Blue'
+        self.vertices[vertex] = 'blue'
         if self.debug == 2:
             self.debugVersion()
         return "Busca em profundidade em execução. Saída no console."
@@ -171,7 +174,7 @@ class GraphMaker:
 
             if v is None:
                 for i in aux:
-                    self.color[i] = 'Black'
+                    self.color[i] = 'white'
                 aux.sort()
                 aux.remove(u)
             else:
@@ -183,14 +186,14 @@ class GraphMaker:
 
     def getAdjacente(self, u):
         for i in self.vertices[u].adj:
-            if self.vertices[i].color == 'Black':
+            if self.vertices[i].color == 'white':
                 return self.vertices[i].name
         else:
             return None
 
     def clear(self):
         for i in self.vertices:
-            self.vertices[i].color = 'Black'
+            self.vertices[i].color = 'white'
         self.message = ""
 
     # TODO
