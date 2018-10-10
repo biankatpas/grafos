@@ -6,6 +6,7 @@ from PIL import Image
 
 app = wx.App()
 
+
 class Gui(wx.Frame):
 
     def __init__(self, *args, **kw):

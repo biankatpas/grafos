@@ -1,5 +1,6 @@
 from graph_maker import GraphMaker
 
+
 class EventHandler:
     def __init__(self, gui, debug=None):
         self.gui = gui

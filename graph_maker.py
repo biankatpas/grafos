@@ -19,7 +19,7 @@ class GraphMaker:
         if vertex not in self.vertices:
             self.vertices[vertex] = Vertice(vertex)
             if self.debug == 1:
-                self.debugVersion()
+                self.debug_version()
             return "Inserido vértice: " + vertex
         return "Vértice já existe no grafo. Não inserido."
 
@@ -29,10 +29,10 @@ class GraphMaker:
                 label = vertex_a+vertex_b
             if label not in self.edges:
                 self.edges[label] = Aresta(vertex_a, vertex_b, peso)
-                self.vertices[vertex_a].addAdjVertex(vertex_b)
-                self.vertices[vertex_b].addAdjVertex(vertex_a)
+                self.vertices[vertex_a].add_adj_vertex(vertex_b)
+                self.vertices[vertex_b].add_adj_vertex(vertex_a)
                 if self.debug == 1:
-                    self.debugVersion()
+                    self.debug_version()
                 return "Inserida aresta: " + label
             return "Aresta já existe no grafo. Não inserida."
         return "Inserir os vértices primeiro."
@@ -69,7 +69,7 @@ class GraphMaker:
                 destino = self.edges[i].destino
                 if vertex_a == origem and vertex_b == destino or vertex_a == destino and vertex_b == origem:
                     if self.debug >= 1:
-                        self.debugVersion()
+                        self.debug_version()
                     return "Verdadeiro. Os vértices " + vertex_a + " e " + vertex_b + " são adjacentes."
             return "Falso. Os vértices " + vertex_a + " e " + vertex_b + " não são adjacentes."
         return "Vértice não encontrado no grafo"
@@ -88,13 +88,13 @@ class GraphMaker:
         if edge in self.edges:
             e = self.edges[edge]
             if self.debug >= 1:
-                self.debugVersion()
+                self.debug_version()
             return "As referências dos vértices da aresta " + str(edge) + " são: " + str(e.origem) + ", " + str(e.destino) + "."
         return "Aresta " + str(edge) + " não encontrada no grafo."
 
     def draw_graph(self):
         # draw graph using graphviz lib
-        if self.dirigido == True:
+        if self.dirigido:
             gv = Digraph('G', filename='graph.gv', format='png')
         else:
             gv = Graph('G', filename='graph.gv', format='png')
@@ -105,7 +105,7 @@ class GraphMaker:
         # gv.view()            # render, save and show graph image
         gv.render(view=False)  # just render and save graph image
 
-    def debugVersion(self):
+    def debug_version(self):
         print("Dict vertices: " + str(self.vertices))
         print("Dict edges: " + str(self.edges))
         for i in self.vertices:
@@ -132,7 +132,7 @@ class GraphMaker:
             time.sleep(2)
             if self.debug == 2:
                 print(aux)
-                self.debugVersion()
+                self.debug_version()
                 self.draw_graph()
         message = "Vértices acessados: "
         for i in self.vertices:
@@ -146,7 +146,6 @@ class GraphMaker:
 
     # TODO
     def depth_search(self, vertex):
-        # print('reference',str(reference))
         print("teste para o git")
         print(vertex)
         self.vertices[vertex].color = 'red'
@@ -158,7 +157,7 @@ class GraphMaker:
                 self.depth_search(self.vertices[i].name)
         self.vertices[vertex] = 'blue'
         if self.debug == 2:
-            self.debugVersion()
+            self.debug_version()
         return "Busca em profundidade em execução. Saída no console."
 
     # TODO

@@ -5,10 +5,10 @@ class Vertice:
         self.color = 'white'
         self.adj = []
 
-    def addAdjVertex(self, vertex):
+    def add_adj_vertex(self, vertex):
         if vertex not in self.adj:
             self.adj.append(vertex)
 
-    def deleteAdjVertex(self, vertex):
+    def delete_adj_vertex(self, vertex):
         if vertex not in self.adj:
             self.adj.remove(vertex)
