@@ -4,16 +4,13 @@ from vertice import Vertice
 from aresta import Aresta
 import time
 
+
 class GraphMaker:
     def __init__(self, dirigido, debug=None):
         self.dirigido = dirigido
         self.debug    = debug
-        self.nodos    = []
-        self.adjlist  = {}
-        self.labels   = []
         self.edges    = {}
         self.vertices = {}
-        self.color    = {}
 
     def insert_vertex(self, vertex):
         if vertex not in self.vertices:
@@ -109,53 +106,49 @@ class GraphMaker:
         print("Dict vertices: " + str(self.vertices))
         print("Dict edges: " + str(self.edges))
         for i in self.vertices:
-            print("Vertice: " + i + "   Adjs: " + str(self.vertices[i].adj) + "   Cor Atual: " + str(self.vertices[i].color))
+            print("Vertice: " + i +
+                  "   Adjs: " + str(self.vertices[i].adj) +
+                  "   Cor Atual: " + str(self.vertices[i].color))
         print()
 
     # todo: algoritmos
     def check_planar_graph(self):
         return "vitor"
 
-    def breadth_search(self, vertex):
+    def breadth_search(self, vertex, evt):
         self.clear()
         aux = [self.vertices[vertex].name]
         self.vertices[vertex].color = 'blue'
         while 0 != len(aux):
             u = aux[0]
-            v = self.getAdjacente(u)
+            v = self.get_adjacente(u)
             if v is None:
                 aux.pop(0)
             else:
                 self.vertices[v].color = 'blue'
                 aux.append(v)
             self.vertices[u].color = 'blue'
-            time.sleep(2)
+            time.sleep(1)
             if self.debug == 2:
                 print(aux)
                 self.debug_version()
-                self.draw_graph()
         message = "Vértices acessados: "
         for i in self.vertices:
              message += self.vertices[i].color
-        print(message)
         return message
 
     def call_depth_search(self, vertex):
         self.clear()
+        if self.debug == 2:
+            self.debug_version()
         return self.depth_search(vertex)
 
-    # TODO
     def depth_search(self, vertex):
-        print("teste para o git")
-        print(vertex)
         self.vertices[vertex].color = 'red'
-        print(self.vertices[vertex].adj)
         for i in self.vertices[vertex].adj:
-            print(i)
             if self.vertices[i].color == 'white':
-                print()
                 self.depth_search(self.vertices[i].name)
-        self.vertices[vertex] = 'blue'
+        self.vertices[vertex].color = 'blue'
         if self.debug == 2:
             self.debug_version()
         return "Busca em profundidade em execução. Saída no console."
@@ -169,7 +162,7 @@ class GraphMaker:
 
         while len(aux) != 0:
             u = aux[0]
-            v = self.getAdjacente(u)
+            v = self.get_adjacente(u)
 
             if v is None:
                 for i in aux:
@@ -177,13 +170,13 @@ class GraphMaker:
                 aux.sort()
                 aux.remove(u)
             else:
-                w = self.getArestas(u, v)
+                w = self.get_arestas(u, v)
                 print(w)
                 if aux.count(v) > 0:
                     print("TESTE")
         return "vitor"
 
-    def getAdjacente(self, u):
+    def get_adjacente(self, u):
         for i in self.vertices[u].adj:
             if self.vertices[i].color == 'white':
                 return self.vertices[i].name
@@ -193,10 +186,9 @@ class GraphMaker:
     def clear(self):
         for i in self.vertices:
             self.vertices[i].color = 'white'
-        self.message = ""
 
     # TODO
-    def getArestas(self, u, v):
+    def get_arestas(self, u, v):
         for i in self.edges:
             if u == self.edges[i][0]:
                 if v == self.edges[i][1]:
