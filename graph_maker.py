@@ -6,11 +6,12 @@ import time
 
 
 class GraphMaker:
-    def __init__(self, dirigido, debug=None):
+    def __init__(self, evt, dirigido, debug=None):
         self.dirigido = dirigido
         self.debug    = debug
         self.edges    = {}
         self.vertices = {}
+        self.evt = evt
 
     def insert_vertex(self, vertex):
         if vertex not in self.vertices:
@@ -132,25 +133,28 @@ class GraphMaker:
             if self.debug == 2:
                 print(aux)
                 self.debug_version()
+                self.evt.on_draw_graph(evt)
         message = "Vértices acessados: "
         for i in self.vertices:
              message += self.vertices[i].color
         return message
 
-    def call_depth_search(self, vertex):
+    def call_depth_search(self, vertex, evt):
         self.clear()
         if self.debug == 2:
             self.debug_version()
-        return self.depth_search(vertex)
+        return self.depth_search(vertex, evt)
 
-    def depth_search(self, vertex):
+    def depth_search(self, vertex, evt):
         self.vertices[vertex].color = 'red'
         for i in self.vertices[vertex].adj:
             if self.vertices[i].color == 'white':
-                self.depth_search(self.vertices[i].name)
+                self.depth_search(self.vertices[i].name, evt)
         self.vertices[vertex].color = 'blue'
         if self.debug == 2:
+            time.sleep(1)
             self.debug_version()
+            self.evt.on_draw_graph(evt)
         return "Busca em profundidade em execução. Saída no console."
 
     # TODO
@@ -175,6 +179,18 @@ class GraphMaker:
                 if aux.count(v) > 0:
                     print("TESTE")
         return "vitor"
+
+    # TODO
+    def greed_coloring(self, vertex):
+        self.clear()
+        colours = ['blue', 'red', 'cyan', 'gold', 'green', 'violet', 'tan', 'pink3']
+        aux = [vertex]
+        self.vertices[vertex].color = 'blue'
+        while 0 != len(aux):
+            u = aux[0]
+            v = self.get_adjacente(u)
+            if v is None:
+                aux.pop(0)
 
     def get_adjacente(self, u):
         for i in self.vertices[u].adj:

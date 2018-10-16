@@ -57,6 +57,7 @@ class Gui(wx.Frame):
         self.bitmap = myWxImage.ConvertToBitmap()
         self.scrolled_panel.Bind(wx.EVT_PAINT, self.on_paint)
         self.scrolled_panel.Refresh()
+        self.scrolled_panel.Update()
 
     def imageToPil(self, myWxImage):
         w, h = myWxImage.GetWidth(), myWxImage.GetHeight()

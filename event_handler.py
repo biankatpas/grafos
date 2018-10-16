@@ -6,7 +6,7 @@ class EventHandler:
         self.gui = gui
         self.debug = debug
         self.dirigido = False
-        self.graph = GraphMaker(self.dirigido, self.debug)
+        self.graph = GraphMaker(self, self.dirigido, self.debug)
 
     def on_insert_vertex(self, evt):
         if self.debug == 2:
@@ -153,7 +153,7 @@ class EventHandler:
 
     def on_depth_search(self, evt):
         value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
-        ret = self.graph.call_depth_search(value)
+        ret = self.graph.call_depth_search(value, evt)
         self.print_feedback(ret)
         self.on_draw_graph(evt)
 
@@ -161,6 +161,11 @@ class EventHandler:
         value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
         ret = self.graph.prim(value)
         self.print_feedback(ret)
+
+    def on_greed_coloring(self, evt):
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        ret = self.graph.greed_coloring(value)
+        self.on_draw_graph(evt)
 
     def on_draw_graph(self, evt):
         self.graph.draw_graph()
