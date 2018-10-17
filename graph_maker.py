@@ -8,10 +8,10 @@ import time
 class GraphMaker:
     def __init__(self, evt, dirigido, debug=None):
         self.dirigido = dirigido
-        self.debug    = debug
-        self.edges    = {}
-        self.vertices = {}
+        self.debug = debug
         self.evt = evt
+        self.edges = {}
+        self.vertices = {}
 
     def insert_vertex(self, vertex):
         if vertex not in self.vertices:
@@ -181,16 +181,36 @@ class GraphMaker:
         return "vitor"
 
     # TODO
-    def greed_coloring(self, vertex):
+    def greed_coloring(self, evt):
         self.clear()
+        high_degree = self.get_higher_degree()
         colours = ['blue', 'red', 'cyan', 'gold', 'green', 'violet', 'tan', 'pink3']
-        aux = [vertex]
-        self.vertices[vertex].color = 'blue'
+        aux = [high_degree]
+        self.vertices[high_degree].color = colours[0]
         while 0 != len(aux):
             u = aux[0]
-            v = self.get_adjacente(u)
-            if v is None:
+            for i in self.vertices[u].adj:
+                if self.vertices[i].name not in aux:
+                    if self.vertices[i].color == 'white':
+                        aux.append(self.vertices[i].name)
+            if self.vertices[u].color != 'white':
                 aux.pop(0)
+            else:
+                for i in colours:
+                    cont = len(self.vertices[u].adj)
+                    for j in self.vertices[u].adj:
+                        if self.vertices[j].color == i:
+                            break
+                        cont -= 1
+                    if cont == 0:
+                        self.vertices[u].color = i
+                        aux.pop(0)
+                        if self.debug == 2:
+                            time.sleep(1)
+                            self.debug_version()
+                            self.evt.on_draw_graph(evt)
+                        break
+        return "Done Greedy Coloring"
 
     def get_adjacente(self, u):
         for i in self.vertices[u].adj:
@@ -202,6 +222,15 @@ class GraphMaker:
     def clear(self):
         for i in self.vertices:
             self.vertices[i].color = 'white'
+
+    def get_higher_degree(self):
+        high = 0
+        vertex = 'A'
+        for i in self.vertices:
+            if len(self.vertices[i].adj) >= high:
+                high = len(self.vertices[i].adj)
+                vertex = self.vertices[i].name
+        return self.vertices[vertex].name
 
     # TODO
     def get_arestas(self, u, v):

@@ -22,6 +22,18 @@ class EventHandler:
             vertex = "D"
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
+            vertex = "E"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "F"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "G"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "H"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
             self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Inserir vértice", text="Informe o Vértice: ")
@@ -39,6 +51,18 @@ class EventHandler:
             ret = self.graph.insert_edge("B", "D", 1)
             self.print_feedback(ret)
             ret = self.graph.insert_edge("B", "A", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("C", "E", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("A", "F", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("B", "G", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("G", "H", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("F", "H", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("E", "G", 1)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
         else:
@@ -163,8 +187,8 @@ class EventHandler:
         self.print_feedback(ret)
 
     def on_greed_coloring(self, evt):
-        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
-        ret = self.graph.greed_coloring(value)
+        # value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        ret = self.graph.greed_coloring(evt)
         self.on_draw_graph(evt)
 
     def on_draw_graph(self, evt):
