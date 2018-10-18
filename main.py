@@ -26,7 +26,9 @@ labels = (
             "Busca em largura",
             "Busca em profundidade",
             "PRIM",
-            "Coloração gulosa"
+            "Coloração gulosa",
+            "Floyd",
+            "Dijkstra"
          )
 
 g.add_button(labels[0], (0, (h * len(g.get_buttons()))), callback=e.on_insert_vertex)
@@ -42,6 +44,8 @@ g.add_button(labels[9], (0, (h * len(g.get_buttons()))), callback=e.on_breadth_s
 g.add_button(labels[10], (0, (h * len(g.get_buttons()))), callback=e.on_depth_search)
 # g.add_button(labels[11], (0, (h * len(g.get_buttons()))), callback=e.on_prim)
 g.add_button(labels[12], (0, (h * len(g.get_buttons()))), callback=e.on_greed_coloring)
+g.add_button(labels[13], (0, (h * len(g.get_buttons()))), callback=e.on_floyd)
+g.add_button(labels[14], (0, (h * len(g.get_buttons()))), callback=e.on_dijkstra)
 
 g.Show()
 g.main_loop()

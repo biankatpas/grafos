@@ -4,6 +4,7 @@ from vertice import Vertice
 from aresta import Aresta
 import time
 
+SPEED = 1
 
 class GraphMaker:
     def __init__(self, evt, dirigido, debug=None):
@@ -129,7 +130,7 @@ class GraphMaker:
                 self.vertices[v].color = 'blue'
                 aux.append(v)
             self.vertices[u].color = 'blue'
-            time.sleep(1)
+            time.sleep(SPEED)
             if self.debug == 2:
                 print(aux)
                 self.debug_version()
@@ -152,7 +153,7 @@ class GraphMaker:
                 self.depth_search(self.vertices[i].name, evt)
         self.vertices[vertex].color = 'blue'
         if self.debug == 2:
-            time.sleep(1)
+            time.sleep(SPEED)
             self.debug_version()
             self.evt.on_draw_graph(evt)
         return "Busca em profundidade em execução. Saída no console."
@@ -180,7 +181,6 @@ class GraphMaker:
                     print("TESTE")
         return "vitor"
 
-    # TODO
     def greed_coloring(self, evt):
         self.clear()
         high_degree = self.get_higher_degree()
@@ -206,11 +206,21 @@ class GraphMaker:
                         self.vertices[u].color = i
                         aux.pop(0)
                         if self.debug == 2:
-                            time.sleep(1)
+                            time.sleep(SPEED)
                             self.debug_version()
                             self.evt.on_draw_graph(evt)
                         break
         return "Done Greedy Coloring"
+
+    #TODO
+    def floyd(self):
+        print("FLOYD")
+        return "FLOYD"
+
+    #TODO
+    def dijkstra(self):
+        print("DIJKSTRA")
+        return "DIJKSTRA"
 
     def get_adjacente(self, u):
         for i in self.vertices[u].adj:

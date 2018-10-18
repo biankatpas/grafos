@@ -5,7 +5,7 @@ class EventHandler:
     def __init__(self, gui, debug=None):
         self.gui = gui
         self.debug = debug
-        self.dirigido = False
+        self.dirigido = True
         self.graph = GraphMaker(self, self.dirigido, self.debug)
 
     def on_insert_vertex(self, evt):
@@ -187,8 +187,18 @@ class EventHandler:
         self.print_feedback(ret)
 
     def on_greed_coloring(self, evt):
-        # value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
         ret = self.graph.greed_coloring(evt)
+        self.print_feedback(ret)
+        self.on_draw_graph(evt)
+
+    def on_floyd(self, evt):
+        ret = self.graph.floyd()
+        self.print_feedback(ret)
+        self.on_draw_graph(evt)
+
+    def on_dijkstra(self, evt):
+        ret = self.graph.dijkstra()
+        self.print_feedback(ret)
         self.on_draw_graph(evt)
 
     def on_draw_graph(self, evt):
