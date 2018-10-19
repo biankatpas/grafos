@@ -4,3 +4,4 @@ class Aresta:
         self.origem = origem
         self.destino = destino
         self.peso = peso
+        self.color = 'black'

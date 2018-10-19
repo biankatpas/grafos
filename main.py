@@ -3,7 +3,7 @@ from gui import Gui
 from event_handler import EventHandler
 
 
-DEBUG = 2
+DEBUG = 3
 if "DEBUG" in os.environ:
     DEBUG = int(os.environ["DEBUG"])
 
@@ -39,7 +39,7 @@ g.add_button(labels[4], (0, (h * len(g.get_buttons()))), callback=e.on_check_adj
 # g.add_button(labels[5], (0, (h * len(g.get_buttons()))), callback=e.on_return_edge_element)
 # g.add_button(labels[6], (0, (h * len(g.get_buttons()))), callback=e.on_return_vertex_element)
 # g.add_button(labels[7], (0, (h * len(g.get_buttons()))), callback=e.on_return_vertices_references_from_edge)
-# g.add_button(labels[8], (0, (h * len(g.get_buttons()))), callback=e.on_check_planar_graph)
+g.add_button(labels[8], (0, (h * len(g.get_buttons()))), callback=e.on_check_planar_graph)
 g.add_button(labels[9], (0, (h * len(g.get_buttons()))), callback=e.on_breadth_search)
 g.add_button(labels[10], (0, (h * len(g.get_buttons()))), callback=e.on_depth_search)
 # g.add_button(labels[11], (0, (h * len(g.get_buttons()))), callback=e.on_prim)

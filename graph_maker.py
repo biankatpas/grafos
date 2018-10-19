@@ -100,7 +100,7 @@ class GraphMaker:
         for v in self.vertices:
             gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
-            gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso))
+            gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso), style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         gv.render(view=False)  # just render and save graph image
 
@@ -111,19 +111,33 @@ class GraphMaker:
             print("Vertice: " + i +
                   "   Adjs: " + str(self.vertices[i].adj) +
                   "   Cor Atual: " + str(self.vertices[i].color))
+            if self.debug >= 3:
+                print("Vértove: " + i +
+                      "  Predecesor: " + str(self.vertices[i].precedente) +
+                      "  Estimativa: " + str(self.vertices[i].estimativa))
         print()
 
     # todo: algoritmos
     def check_planar_graph(self):
+        # aux = [self.vertices['S'].name]
+        # while 0 != len(aux):
+        #     u = aux[0]
+        #     v = self.get_adjacent(u)
+        #     print(" " + str(v))
+        #     if v is None:
+        #         aux.pop(0)
+        #     else:
+        #         self.vertices[v].color = 'blue'
+        #     self.vertices[u].color = 'blue'
         return "vitor"
 
     def breadth_search(self, vertex, evt):
-        self.clear()
+        self.clear_vertex()
         aux = [self.vertices[vertex].name]
         self.vertices[vertex].color = 'blue'
         while 0 != len(aux):
             u = aux[0]
-            v = self.get_adjacente(u)
+            v = self.get_adjacent(u)
             if v is None:
                 aux.pop(0)
             else:
@@ -131,7 +145,7 @@ class GraphMaker:
                 aux.append(v)
             self.vertices[u].color = 'blue'
             time.sleep(SPEED)
-            if self.debug == 2:
+            if self.debug >= 2:
                 print(aux)
                 self.debug_version()
                 self.evt.on_draw_graph(evt)
@@ -141,7 +155,7 @@ class GraphMaker:
         return message
 
     def call_depth_search(self, vertex, evt):
-        self.clear()
+        self.clear_vertex()
         if self.debug == 2:
             self.debug_version()
         return self.depth_search(vertex, evt)
@@ -152,7 +166,7 @@ class GraphMaker:
             if self.vertices[i].color == 'white':
                 self.depth_search(self.vertices[i].name, evt)
         self.vertices[vertex].color = 'blue'
-        if self.debug == 2:
+        if self.debug >= 2:
             time.sleep(SPEED)
             self.debug_version()
             self.evt.on_draw_graph(evt)
@@ -167,7 +181,7 @@ class GraphMaker:
 
         while len(aux) != 0:
             u = aux[0]
-            v = self.get_adjacente(u)
+            v = self.get_adjacent(u)
 
             if v is None:
                 for i in aux:
@@ -175,14 +189,14 @@ class GraphMaker:
                 aux.sort()
                 aux.remove(u)
             else:
-                w = self.get_arestas(u, v)
+                w = self.get_edge(u, v)
                 print(w)
                 if aux.count(v) > 0:
                     print("TESTE")
         return "vitor"
 
     def greed_coloring(self, evt):
-        self.clear()
+        self.clear_vertex()
         high_degree = self.get_higher_degree()
         colours = ['blue', 'red', 'cyan', 'gold', 'green', 'violet', 'tan', 'pink3']
         aux = [high_degree]
@@ -205,7 +219,7 @@ class GraphMaker:
                     if cont == 0:
                         self.vertices[u].color = i
                         aux.pop(0)
-                        if self.debug == 2:
+                        if self.debug >= 2:
                             time.sleep(SPEED)
                             self.debug_version()
                             self.evt.on_draw_graph(evt)
@@ -218,20 +232,58 @@ class GraphMaker:
         return "FLOYD"
 
     #TODO
-    def dijkstra(self):
-        print("DIJKSTRA")
+    def dijkstra(self, vertex, evt):
+        self.clear_edges()
+        self.clear_vertex()
+        vertAbertos = []
+        colorToReset = []
+        self.vertices[vertex].estimativa = 0
+        for i in self.vertices:
+            vertAbertos.append(i)
+
+        while len(vertAbertos) != 0:
+            self.vertices[vertAbertos[0]].color = 'red'
+            u = vertAbertos[0]
+            v = self.get_adjacent(u)
+            print(u + v)
+            if v is None:
+                for i in colorToReset:
+                    self.vertices[i].color = 'white'
+                vertAbertos.pop(0)
+            else:
+                w = self.get_edge(u, v)
+                print(w)
+                self.vertices[v].estimativa = self.edges[w].peso
+                self.vertices[v].precedente = self.vertices[u].name
+                self.vertices[v].color = 'blue'
+                colorToReset.append(v)
+
+            if self.debug >= 3:
+                time.sleep(SPEED)
+                self.debug_version()
+                self.evt.on_draw_graph(evt)
+
         return "DIJKSTRA"
 
-    def get_adjacente(self, u):
+    def get_adjacent(self, u):
         for i in self.vertices[u].adj:
             if self.vertices[i].color == 'white':
-                return self.vertices[i].name
+                if self.dirigido:
+                    edge = self.vertices[u].name + self.vertices[i].name
+                    if edge in self.edges:
+                        return self.vertices[i].name
+                else:
+                    return self.vertices[i].name
         else:
             return None
 
-    def clear(self):
+    def clear_vertex(self, color='white'):
         for i in self.vertices:
-            self.vertices[i].color = 'white'
+            self.vertices[i].color = color
+
+    def clear_edges(self, color='black'):
+        for e in self.edges:
+            self.edges[e].color = color
 
     def get_higher_degree(self):
         high = 0
@@ -242,12 +294,9 @@ class GraphMaker:
                 vertex = self.vertices[i].name
         return self.vertices[vertex].name
 
-    # TODO
-    def get_arestas(self, u, v):
+    def get_edge(self, u, v):
         for i in self.edges:
-            if u == self.edges[i][0]:
-                if v == self.edges[i][1]:
-                    return self.edges[i][1]
-                return self.edges[i][0]
-        else:
-            return None
+            origem = self.edges[i].origem
+            destino = self.edges[i].destino
+            if origem == u and destino == v:
+                return i

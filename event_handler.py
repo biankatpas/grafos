@@ -35,6 +35,23 @@ class EventHandler:
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
+        elif self.debug == 3:
+            vertex = "S"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "X"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "U"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "Y"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            vertex = "V"
+            ret = self.graph.insert_vertex(vertex)
+            self.print_feedback(ret)
+            self.on_draw_graph(evt)
         else:
             value = self.gui.show_input_dialog(title="Inserir vértice", text="Informe o Vértice: ")
             if value is not None:
@@ -48,21 +65,43 @@ class EventHandler:
             self.print_feedback(ret)
             ret = self.graph.insert_edge("A", "C", 1)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "D", 1)
+            ret = self.graph.insert_edge("B", "D", 3)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "A", 1)
+            ret = self.graph.insert_edge("B", "A", 2)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("C", "E", 1)
+            ret = self.graph.insert_edge("C", "E", 4)
             self.print_feedback(ret)
             ret = self.graph.insert_edge("A", "F", 1)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "G", 1)
+            ret = self.graph.insert_edge("B", "G", 6)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("G", "H", 1)
+            ret = self.graph.insert_edge("G", "H", 5)
             self.print_feedback(ret)
             ret = self.graph.insert_edge("F", "H", 1)
             self.print_feedback(ret)
-            ret = self.graph.insert_edge("E", "G", 1)
+            ret = self.graph.insert_edge("E", "G", 10)
+            self.print_feedback(ret)
+            self.on_draw_graph(evt)
+        elif self.debug == 3:
+            ret = self.graph.insert_edge("S", "U", 10)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("S", "X", 5)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("X", "U", 2)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("X", "V", 9)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("X", "Y", 2)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("U", "X", 3)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("U", "V", 1)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("Y", "S", 7)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("Y", "V", 4)
+            self.print_feedback(ret)
+            ret = self.graph.insert_edge("V", "Y", 6)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
         else:
@@ -182,7 +221,7 @@ class EventHandler:
         self.on_draw_graph(evt)
 
     def on_prim(self, evt):
-        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe a referência do vértice inicial")
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
         ret = self.graph.prim(value)
         self.print_feedback(ret)
 
@@ -197,7 +236,8 @@ class EventHandler:
         self.on_draw_graph(evt)
 
     def on_dijkstra(self, evt):
-        ret = self.graph.dijkstra()
+        value = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        ret = self.graph.dijkstra(value, evt)
         self.print_feedback(ret)
         self.on_draw_graph(evt)
 
