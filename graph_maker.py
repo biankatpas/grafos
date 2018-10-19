@@ -6,9 +6,10 @@ import time
 
 SPEED = 1
 
+
 class GraphMaker:
-    def __init__(self, evt, dirigido, debug=None):
-        self.dirigido = dirigido
+    def __init__(self, evt, directed, debug=None):
+        self.directed = directed
         self.debug = debug
         self.evt = evt
         self.edges = {}
@@ -38,28 +39,30 @@ class GraphMaker:
 
     #TODO
     def remove_vertex(self, vertex):
-        if vertex not in self.vertices:
-
-            message = "Vértice " + vertex + " removido."
-            for i in range(0, len(self.nodos)):
-                message = message + "\n" + self.return_vertex_element(i)
-            return message
-        return "Vértice não encontrado no grafo."
+        # if vertex not in self.vertices:
+        #
+        #     message = "Vértice " + vertex + " removido."
+        #     for i in range(0, len(self.nodos)):
+        #         message = message + "\n" + self.return_vertex_element(i)
+        #     return message
+        # return "Vértice não encontrado no grafo."
+        return "TODO"
 
     #TODO
     def remove_edge(self, reference):
-        if reference < len(self.labels):
-            e = self.labels[reference]
-            self.labels.pop(reference)
-            self.edges.pop(e)
-            if self.debug >= 1:
-                print(self.labels)
-                print(self.edges)
-            message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas."
-            for i in range(0, len(self.labels)):
-                message = message + "\n" + self.return_edge_element(i)
-            return message
-        return "Aresta " + str(reference) + " não encontrada no grafo."
+        # if reference < len(self.labels):
+        #     e = self.labels[reference]
+        #     self.labels.pop(reference)
+        #     self.edges.pop(e)
+        #     if self.debug >= 1:
+        #         print(self.labels)
+        #         print(self.edges)
+        #     message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas."
+        #     for i in range(0, len(self.labels)):
+        #         message = message + "\n" + self.return_edge_element(i)
+        #     return message
+        # return "Aresta " + str(reference) + " não encontrada no grafo."
+        return "TODO"
 
     def check_adjacency(self, vertex_a, vertex_b):
         if vertex_a in self.vertices and vertex_b in self.vertices:
@@ -75,7 +78,9 @@ class GraphMaker:
 
     def return_edge_element(self, edge):
         if edge in self.edges:
-            return "Elemento armazenado na aresta " + str(edge) + " é: " + str(edge) + " e tem peso: " + str(self.edges[edge].peso)
+            return "Elemento armazenado na aresta " + str(edge) + \
+                   " é: " + str(edge) + \
+                   " e tem peso: " + str(self.edges[edge].peso)
         return "Aresta " + str(edge) + " não encontrada no grafo."
 
     def return_vertex_element(self, vertex):
@@ -88,12 +93,14 @@ class GraphMaker:
             e = self.edges[edge]
             if self.debug >= 1:
                 self.debug_version()
-            return "As referências dos vértices da aresta " + str(edge) + " são: " + str(e.origem) + ", " + str(e.destino) + "."
+            return "As referências dos vértices da aresta " + str(edge)\
+                   + " são: " + str(e.origem)\
+                   + ", " + str(e.destino) + "."
         return "Aresta " + str(edge) + " não encontrada no grafo."
 
     def draw_graph(self):
         # draw graph using graphviz lib
-        if self.dirigido:
+        if self.directed:
             gv = Digraph('G', filename='graph.gv', format='png')
         else:
             gv = Graph('G', filename='graph.gv', format='png')
@@ -101,9 +108,11 @@ class GraphMaker:
             gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             # APRESENTAR NOME E PESO
-            gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso), style='filled', color=str(self.edges[e].color))
+            gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
+                    style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS PESO
-            # gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso), style='filled', color=str(self.edges[e].color))
+            # gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
+            #         style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         gv.render(view=False)  # just render and save graph image
 
@@ -264,7 +273,7 @@ class GraphMaker:
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
             if self.vertices[i].color == 'white':
-                if self.dirigido:
+                if self.directed:
                     edge = self.vertices[u].name + self.vertices[i].name
                     if edge in self.edges:
                         return self.vertices[i].name
@@ -314,4 +323,3 @@ class GraphMaker:
             if predecesor != self.vertices[i].name:
                 self.edges[predecesor + self.vertices[i].name].color = color
         self.evt.on_draw_graph(evt)
-

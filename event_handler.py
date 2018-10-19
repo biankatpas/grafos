@@ -173,7 +173,8 @@ class EventHandler:
             ret = self.graph.return_edge_element('AE')
             self.print_feedback(ret)
         else:
-            value = self.gui.show_input_dialog(title="Retornar elemento da aresta", text="Informe a referência da aresta")
+            value = self.gui.show_input_dialog(title="Retornar elemento da aresta",
+                                               text="Informe a referência da aresta")
             if value is not None:
                 ret = self.graph.return_edge_element(value)
                 self.print_feedback(ret)
@@ -187,7 +188,8 @@ class EventHandler:
             ret = self.graph.return_vertex_element('E')
             self.print_feedback(ret)
         else:
-            value = self.gui.show_input_dialog(title="Retornar elemento do vértice", text="Informe a referência do vértice")
+            value = self.gui.show_input_dialog(title="Retornar elemento do vértice",
+                                               text="Informe a referência do vértice")
             if value is not None:
                 ret = self.graph.return_vertex_element(value)
                 self.print_feedback(ret)
@@ -199,7 +201,8 @@ class EventHandler:
             ret = self.graph.return_vertices_references_from_edge('AE')
             self.print_feedback(ret)
         else:
-            value = self.gui.show_input_dialog(title="Retornar referência dos vértices da aresta", text="Informe a referência da aresta")
+            value = self.gui.show_input_dialog(title="Retornar referência dos vértices da aresta",
+                                               text="Informe a referência da aresta")
             if value is not None:
                 ret = self.graph.return_vertices_references_from_edge(value)
                 self.print_feedback(ret)
