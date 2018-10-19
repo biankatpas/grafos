@@ -4,7 +4,7 @@ class Vertice:
         self.name = name
         self.color = 'white'
         self.adj = []
-        self.precedente = 0
+        self.precedente = None
         self.estimativa = 9999
         # ESTE VALOR REPRESENTA INFINITO
 
@@ -15,3 +15,6 @@ class Vertice:
     def delete_adj_vertex(self, vertex):
         if vertex not in self.adj:
             self.adj.remove(vertex)
+
+    def __lt__(self, other):
+        return self.estimativa < other.estimativa

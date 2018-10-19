@@ -100,7 +100,10 @@ class GraphMaker:
         for v in self.vertices:
             gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
+            # APRESENTAR NOME E PESO
             gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso), style='filled', color=str(self.edges[e].color))
+            # APRESENTAR APENAS PESO
+            # gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso), style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         gv.render(view=False)  # just render and save graph image
 
@@ -112,23 +115,13 @@ class GraphMaker:
                   "   Adjs: " + str(self.vertices[i].adj) +
                   "   Cor Atual: " + str(self.vertices[i].color))
             if self.debug >= 3:
-                print("Vértove: " + i +
+                print("Vértice: " + i +
                       "  Predecesor: " + str(self.vertices[i].precedente) +
                       "  Estimativa: " + str(self.vertices[i].estimativa))
         print()
 
     # todo: algoritmos
     def check_planar_graph(self):
-        # aux = [self.vertices['S'].name]
-        # while 0 != len(aux):
-        #     u = aux[0]
-        #     v = self.get_adjacent(u)
-        #     print(" " + str(v))
-        #     if v is None:
-        #         aux.pop(0)
-        #     else:
-        #         self.vertices[v].color = 'blue'
-        #     self.vertices[u].color = 'blue'
         return "vitor"
 
     def breadth_search(self, vertex, evt):
@@ -231,39 +224,42 @@ class GraphMaker:
         print("FLOYD")
         return "FLOYD"
 
-    #TODO
     def dijkstra(self, vertex, evt):
         self.clear_edges()
         self.clear_vertex()
-        vertAbertos = []
-        colorToReset = []
+        vert_abertos = []
+        color_to_reset = []
         self.vertices[vertex].estimativa = 0
+        self.vertices[vertex].precedente = vertex
         for i in self.vertices:
-            vertAbertos.append(i)
-
-        while len(vertAbertos) != 0:
-            self.vertices[vertAbertos[0]].color = 'red'
-            u = vertAbertos[0]
+            vert_abertos.append(i)
+        while len(vert_abertos) != 0:
+            vert_abertos = self.sort_dict(vert_abertos)
+            self.vertices[vert_abertos[0]].color = 'red'
+            u = vert_abertos[0]
             v = self.get_adjacent(u)
-            print(u + v)
             if v is None:
-                for i in colorToReset:
+                for i in color_to_reset:
                     self.vertices[i].color = 'white'
-                vertAbertos.pop(0)
+                color_to_reset.clear()
+                vert_abertos.pop(0)
             else:
                 w = self.get_edge(u, v)
-                print(w)
-                self.vertices[v].estimativa = self.edges[w].peso
+                peso_test = self.vertices[u].estimativa + self.edges[w].peso
+                if self.vertices[v].estimativa <= peso_test:
+                    self.vertices[v].estimativa = self.edges[w].peso
+                else:
+                    self.vertices[v].estimativa = peso_test
                 self.vertices[v].precedente = self.vertices[u].name
                 self.vertices[v].color = 'blue'
-                colorToReset.append(v)
-
+                color_to_reset.append(v)
             if self.debug >= 3:
                 time.sleep(SPEED)
                 self.debug_version()
                 self.evt.on_draw_graph(evt)
-
-        return "DIJKSTRA"
+        time.sleep(SPEED * 2)
+        self.set_color_on_edges(evt)
+        return "DIJKSTRA DONE"
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
@@ -300,3 +296,22 @@ class GraphMaker:
             destino = self.edges[i].destino
             if origem == u and destino == v:
                 return i
+
+    def sort_dict(self, vet):
+        sorted_vet = []
+        for i in vet:
+            sorted_vet.append(self.vertices[i])
+        sorted_vet.sort()
+        vet.clear()
+        for i in sorted_vet:
+            vet.append(i.name)
+        return vet
+
+    def set_color_on_edges(self, evt, color='green'):
+        for i in self.vertices:
+            self.vertices[i].color = 'cyan'
+            predecesor = self.vertices[i].precedente
+            if predecesor != self.vertices[i].name:
+                self.edges[predecesor + self.vertices[i].name].color = color
+        self.evt.on_draw_graph(evt)
+
