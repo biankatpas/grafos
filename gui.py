@@ -4,6 +4,8 @@ import numpy as np
 import PIL
 from PIL import Image
 
+from event_handler import EventHandler
+
 app = wx.App()
 
 
@@ -15,12 +17,11 @@ class Gui(wx.Frame):
         self.SetMaxSize(self.GetSize())
         self.SetMinSize(self.GetSize())
         self.SetBackgroundColour(colour=wx.WHITE)
-        self.scrolled_panel = scrolled.ScrolledPanel(self, -1, size=(914, 573), pos=(400,0) , style=wx.SUNKEN_BORDER)
+        self.scrolled_panel = scrolled.ScrolledPanel(self, -1, size=(914, 690), pos=(420,0) , style=wx.SUNKEN_BORDER)
         self.scrolled_panel.SetBackgroundColour(wx.WHITE)
         self.bitmap = wx.StaticBitmap(parent=self.scrolled_panel)
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
-        self.text_area.SetPosition((400, 585))
-        self.text_area.SetSize((914,268))
+        self.text_area.SetSize((400,690))
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
@@ -30,6 +31,7 @@ class Gui(wx.Frame):
         self.factor = 1
         self.button_id = 0
         self.buttons = []
+        self.evt = EventHandler(self)
 
     def add_button(self, text, pos, size=(400, 65), callback=None):
         self.button_id += 1
@@ -37,6 +39,62 @@ class Gui(wx.Frame):
         bt.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         bt.Bind(wx.EVT_BUTTON,  callback)
         self.buttons.append(bt)
+
+    def add_menu_bar(self):
+        # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # menu itens
+        self.graphMenu = wx.Menu()
+        # The "\t..." syntax defines an accelerator key that also triggers the same event
+        self.insert_vertex = self.graphMenu.Append(-1, "&Inserir Vértice...\tCtrl-V", "Insere um vértice no grafo!")
+        self.insert_edge = self.graphMenu.Append(-1, "&Inserir Aresta...\tCtrl-A", "Insere uma aresta no grafo!")
+        self.remove_vertex = self.graphMenu.Append(-1, "&Remover Vértice...\tCtrl-Shift-V", "Remove um vértice do grafo!")
+        self.remove_edge = self.graphMenu.Append(-1, "&Remover Aresta...\tCtrl-Shift-A", "Remove uma aresta do grafo!")
+        self.check_adjacency = self.graphMenu.Append(-1, "&Verificar Adjacência", "Verificar se dois vértices são adjacentes!")
+        self.return_edge_element = self.graphMenu.Append(-1, "&Retornar elemento da Aresta", "Retorna o elemento da aresta!")
+        self.return_vertex_element = self.graphMenu.Append(-1, "&Retornar elemento do Vértice", "Retorna o elemento do vértice!")
+        self.return_vertices_references_from_edge = self.graphMenu.Append(-1, "&Retornar a referência dos vértices da Aresta", "Retorna a referência dos dois vértices de uma aresta!")
+        self.check_planar_graph = self.graphMenu.Append(-1, "&IVerificar planaridade...\tCtrl-P", "Verifica se o grafo é planar!")
+        self.breadth_search = self.graphMenu.Append(-1, "&Busca em largura...\tCtrl-B", "Efetua a busca em largura no grafo!")
+        self.depth_search = self.graphMenu.Append(-1, "&Busca em profundidade...\tCtrl-D", "Efetua a busca em profundidade no grafo!")
+        self.prim = self.graphMenu.Append(-1, "&PRIM...\tCtrl-I", "Executa o algoritmo de PRIM!")
+        self.graphMenu.AppendSeparator()
+        self.green_coloring = self.graphMenu.Append(-1, "&Coloração gulosa...\tCtrl-G", "Executa o algorimo de coloração gulosa!")
+        self.floyd = self.graphMenu.Append(-1, "&Floyd...\tCtrl-F", "Executa o algorimo floyd!")
+        self.dijkstra = self.graphMenu.Append(-1, "&dijkstra...\tCtrl-K", "Executa o algorimo dijkstra!")
+        self.graphMenu.AppendSeparator()
+        self.exitItem = self.graphMenu.Append(wx.ID_EXIT)
+        # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # menu bar
+        # Make the menu bar and add the two menus to it. The '&' defines
+        # that the next letter is the "mnemonic" for the menu item. On the
+        # platforms that support it those letters are underlined and can be
+        # triggered from the keyboard.
+        self.menuBar = wx.MenuBar()
+        self.menuBar.Append(self.graphMenu, "&Grafo")
+        # Finally, associate a handler function with the EVT_MENU event for
+        # each of the menu items. That means that when that menu item is
+        # activated then the associated handler function will be called.
+        self.Bind(wx.EVT_MENU, self.evt.on_insert_vertex, self.insert_vertex)
+        self.Bind(wx.EVT_MENU, self.evt.on_insert_edge, self.insert_edge)
+        self.Bind(wx.EVT_MENU, self.evt.on_remove_vertex, self.remove_vertex)
+        self.Bind(wx.EVT_MENU, self.evt.on_remove_edge, self.remove_edge)
+        self.Bind(wx.EVT_MENU, self.evt.on_check_adjacency, self.check_adjacency)
+        self.Bind(wx.EVT_MENU, self.evt.on_return_edge_element, self.return_edge_element)
+        self.Bind(wx.EVT_MENU, self.evt.on_return_vertex_element, self.return_vertex_element)
+        self.Bind(wx.EVT_MENU, self.evt.on_return_vertices_references_from_edge, self.return_vertices_references_from_edge)
+        self.Bind(wx.EVT_MENU, self.evt.on_check_planar_graph, self.check_planar_graph)
+        self.Bind(wx.EVT_MENU, self.evt.on_breadth_search, self.breadth_search)
+        self.Bind(wx.EVT_MENU, self.evt.on_depth_search, self.depth_search)
+        self.Bind(wx.EVT_MENU, self.evt.on_prim, self.prim)
+        self.Bind(wx.EVT_MENU, self.evt.on_greed_coloring, self.green_coloring)
+        self.Bind(wx.EVT_MENU, self.evt.on_floyd, self.floyd)
+        self.Bind(wx.EVT_MENU, self.evt.on_dijkstra, self.dijkstra)
+        self.Bind(wx.EVT_MENU, self.evt.on_exit, self.exitItem)
+        # Give the menu bar to the frame
+        self.SetMenuBar(self.menuBar)
+
+    def set_evt_handler(self, evt):
+        self.evt = evt
 
     def show_input_dialog(self, title='Text Entry', text='Enter some text', value=""):
         dlg = wx.TextEntryDialog(self, text, title)

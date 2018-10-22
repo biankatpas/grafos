@@ -196,6 +196,9 @@ class EventHandler:
         self.print_feedback(ret)
         self.on_draw_graph(evt)
 
+    def on_exit(self, event):
+        self.gui.Close(True)
+
     def on_draw_graph(self, evt):
         self.graph.draw_graph()
         self.gui.draw_graph()
