@@ -18,7 +18,7 @@ class GraphMaker:
     def insert_vertex(self, vertex):
         if vertex not in self.vertices:
             self.vertices[vertex] = Vertice(vertex)
-            if self.debug == 1:
+            if self.debug >= 1:
                 self.debug_version()
             return "Inserido vértice: " + vertex
         return "Vértice já existe no grafo. Não inserido."
@@ -31,7 +31,7 @@ class GraphMaker:
                 self.edges[label] = Aresta(vertex_a, vertex_b, peso)
                 self.vertices[vertex_a].add_adj_vertex(vertex_b)
                 self.vertices[vertex_b].add_adj_vertex(vertex_a)
-                if self.debug == 1:
+                if self.debug >= 1:
                     self.debug_version()
                 return "Inserida aresta: " + label
             return "Aresta já existe no grafo. Não inserida."
@@ -70,7 +70,7 @@ class GraphMaker:
                 origem = self.edges[i].origem
                 destino = self.edges[i].destino
                 if vertex_a == origem and vertex_b == destino or vertex_a == destino and vertex_b == origem:
-                    if self.debug >= 1:
+                    if self.debug >= 2:
                         self.debug_version()
                     return "Verdadeiro. Os vértices " + vertex_a + " e " + vertex_b + " são adjacentes."
             return "Falso. Os vértices " + vertex_a + " e " + vertex_b + " não são adjacentes."
@@ -91,7 +91,7 @@ class GraphMaker:
     def return_vertices_references_from_edge(self, edge):
         if edge in self.edges:
             e = self.edges[edge]
-            if self.debug >= 1:
+            if self.debug >= 2:
                 self.debug_version()
             return "As referências dos vértices da aresta " + str(edge)\
                    + " são: " + str(e.origem)\
@@ -108,25 +108,26 @@ class GraphMaker:
             gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             # APRESENTAR NOME E PESO
-            gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
-                    style='filled', color=str(self.edges[e].color))
-            # APRESENTAR APENAS PESO
-            # gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
+            # gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
             #         style='filled', color=str(self.edges[e].color))
+            # APRESENTAR APENAS PESO
+            gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
+                    style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         gv.render(view=False)  # just render and save graph image
 
     def debug_version(self):
         print("Dict vertices: " + str(self.vertices))
         print("Dict edges: " + str(self.edges))
-        for i in self.vertices:
-            print("Vertice: " + i +
-                  "   Adjs: " + str(self.vertices[i].adj) +
-                  "   Cor Atual: " + str(self.vertices[i].color))
-            if self.debug >= 3:
-                print("Vértice: " + i +
-                      "  Predecesor: " + str(self.vertices[i].precedente) +
-                      "  Estimativa: " + str(self.vertices[i].estimativa))
+        if self.debug >= 2:
+            for i in self.vertices:
+                print("Vertice: " + i +
+                      "   Adjs: " + str(self.vertices[i].adj) +
+                      "   Cor Atual: " + str(self.vertices[i].color))
+                if self.debug >= 3:
+                    print("Vértice: " + i +
+                          "  Predecesor: " + str(self.vertices[i].precedente) +
+                          "  Estimativa: " + str(self.vertices[i].estimativa))
         print()
 
     # todo: algoritmos
@@ -158,7 +159,7 @@ class GraphMaker:
 
     def call_depth_search(self, vertex, evt):
         self.clear_vertex()
-        if self.debug == 2:
+        if self.debug >= 2:
             self.debug_version()
         return self.depth_search(vertex, evt)
 
@@ -176,25 +177,6 @@ class GraphMaker:
 
     # TODO
     def prim(self, reference):
-        aux = []
-        for i in self.nodos:
-            aux.append(i)
-        aux.sort()
-
-        while len(aux) != 0:
-            u = aux[0]
-            v = self.get_adjacent(u)
-
-            if v is None:
-                for i in aux:
-                    self.color[i] = 'white'
-                aux.sort()
-                aux.remove(u)
-            else:
-                w = self.get_edge(u, v)
-                print(w)
-                if aux.count(v) > 0:
-                    print("TESTE")
         return "vitor"
 
     def greed_coloring(self, evt):
@@ -236,22 +218,22 @@ class GraphMaker:
     def dijkstra(self, vertex, evt):
         self.clear_edges()
         self.clear_vertex()
-        vert_abertos = []
+        open_vertex = []
         color_to_reset = []
         self.vertices[vertex].estimativa = 0
         self.vertices[vertex].precedente = vertex
         for i in self.vertices:
-            vert_abertos.append(i)
-        while len(vert_abertos) != 0:
-            vert_abertos = self.sort_dict(vert_abertos)
-            self.vertices[vert_abertos[0]].color = 'red'
-            u = vert_abertos[0]
+            open_vertex.append(i)
+        while len(open_vertex) != 0:
+            open_vertex = self.sort_dict(open_vertex)
+            self.vertices[open_vertex[0]].color = 'red'
+            u = open_vertex[0]
             v = self.get_adjacent(u)
             if v is None:
                 for i in color_to_reset:
                     self.vertices[i].color = 'white'
                 color_to_reset.clear()
-                vert_abertos.pop(0)
+                open_vertex.pop(0)
             else:
                 w = self.get_edge(u, v)
                 peso_test = self.vertices[u].estimativa + self.edges[w].peso

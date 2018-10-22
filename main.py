@@ -3,7 +3,12 @@ from gui import Gui
 from event_handler import EventHandler
 
 
-DEBUG = 3
+DEBUG = 50
+# 1 - Apresentar Dict vertices e edges
+# 2 - Apresentar Adjs e cor
+# 3 - Apresentar Predecessor e Estimativa
+# 50 - Auto colocar vertices
+
 if "DEBUG" in os.environ:
     DEBUG = int(os.environ["DEBUG"])
 

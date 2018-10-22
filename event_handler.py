@@ -5,37 +5,11 @@ class EventHandler:
     def __init__(self, gui, debug=None):
         self.gui = gui
         self.debug = debug
-        self.dirigido = True
-        self.graph = GraphMaker(self, self.dirigido, self.debug)
+        self.directed = True
+        self.graph = GraphMaker(self, self.directed, self.debug)
 
     def on_insert_vertex(self, evt):
-        if self.debug == 2:
-            vertex = "A"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "B"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "C"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "D"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "E"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "F"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "G"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            vertex = "H"
-            ret = self.graph.insert_vertex(vertex)
-            self.print_feedback(ret)
-            self.on_draw_graph(evt)
-        elif self.debug == 3:
+        if self.debug >= 50:
             vertex = "S"
             ret = self.graph.insert_vertex(vertex)
             self.print_feedback(ret)
@@ -60,29 +34,7 @@ class EventHandler:
                 self.on_draw_graph(evt)
 
     def on_insert_edge(self, evt):
-        if self.debug == 2:
-            ret = self.graph.insert_edge("A", "B", 1, str('AB'))
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("A", "C", 1)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "D", 3)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "A", 2)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("C", "E", 4)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("A", "F", 1)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("B", "G", 6)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("G", "H", 5)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("F", "H", 1)
-            self.print_feedback(ret)
-            ret = self.graph.insert_edge("E", "G", 10)
-            self.print_feedback(ret)
-            self.on_draw_graph(evt)
-        elif self.debug == 3:
+        if self.debug >= 50:
             ret = self.graph.insert_edge("S", "U", 10)
             self.print_feedback(ret)
             ret = self.graph.insert_edge("S", "X", 5)
@@ -126,7 +78,7 @@ class EventHandler:
             self.print_feedback(ret)
 
     def on_remove_vertex(self, evt):
-        if self.debug == 2:
+        if self.debug >= 50:
             ret = self.graph.remove_vertex(0)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
@@ -138,7 +90,7 @@ class EventHandler:
                 self.on_draw_graph(evt)
 
     def on_remove_edge(self, evt):
-        if self.debug == 2:
+        if self.debug >= 50:
             ret = self.graph.remove_edge(0)
             self.print_feedback(ret)
             self.on_draw_graph(evt)
@@ -150,10 +102,10 @@ class EventHandler:
                 self.on_draw_graph(evt)
 
     def on_check_adjacency(self, evt):
-        if self.debug == 2:
-            ret = self.graph.check_adjacency("A", "C")
+        if self.debug >= 50:
+            ret = self.graph.check_adjacency("S", "U")
             self.print_feedback(ret)
-            ret = self.graph.check_adjacency("C", "D")
+            ret = self.graph.check_adjacency("U", "Y")
             self.print_feedback(ret)
         else:
             values = []
@@ -167,7 +119,7 @@ class EventHandler:
             self.print_feedback(ret)
 
     def on_return_edge_element(self, evt):
-        if self.debug == 2:
+        if self.debug >= 50:
             ret = self.graph.return_edge_element('AB')
             self.print_feedback(ret)
             ret = self.graph.return_edge_element('AE')
@@ -180,7 +132,7 @@ class EventHandler:
                 self.print_feedback(ret)
 
     def on_return_vertex_element(self, evt):
-        if self.debug == 2:
+        if self.debug >= 50:
             ret = self.graph.return_vertex_element('A')
             self.print_feedback(ret)
             ret = self.graph.return_vertex_element('B')
@@ -195,7 +147,7 @@ class EventHandler:
                 self.print_feedback(ret)
 
     def on_return_vertices_references_from_edge(self, evt):
-        if self.debug == 2:
+        if self.debug >= 50:
             ret = self.graph.return_vertices_references_from_edge('AB')
             self.print_feedback(ret)
             ret = self.graph.return_vertices_references_from_edge('AE')
