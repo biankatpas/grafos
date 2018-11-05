@@ -216,6 +216,7 @@ class GraphMaker:
         return "FLOYD"
 
     def dijkstra(self, vertex, evt):
+        self.clear_estimativa()
         self.clear_edges()
         self.clear_vertex()
         open_vertex = []
@@ -271,6 +272,10 @@ class GraphMaker:
     def clear_edges(self, color='black'):
         for e in self.edges:
             self.edges[e].color = color
+
+    def clear_estimativa(self):
+        for i in self.vertices:
+            self.vertices[i].estimativa = 9999
 
     def get_higher_degree(self):
         high = 0
