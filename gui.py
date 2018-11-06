@@ -21,24 +21,17 @@ class Gui(wx.Frame):
         self.scrolled_panel.SetBackgroundColour(wx.WHITE)
         self.bitmap = wx.StaticBitmap(parent=self.scrolled_panel)
         self.text_area = wx.TextCtrl(self, -1, style=wx.TE_MULTILINE | wx.BORDER_SUNKEN | wx.TE_READONLY | wx.TE_RICH2)
-        self.text_area.SetSize((400,650))
+        self.text_area.SetSize((400,600))
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
         self.hslider = wx.Slider(self, -1, 100, 100, 200, size=(394, -1), style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS)
-        self.hslider.SetPosition((0,780))
+        self.hslider.SetPosition((10,610))
         self.hslider.Bind(wx.EVT_SCROLL, self.on_scroll)
         self.factor = 1
         self.button_id = 0
         self.buttons = []
         self.evt = EventHandler(self)
-
-    def add_button(self, text, pos, size=(400, 65), callback=None):
-        self.button_id += 1
-        bt = wx.Button(self, self.button_id, text, pos=pos, name=text, size=size)
-        bt.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
-        bt.Bind(wx.EVT_BUTTON,  callback)
-        self.buttons.append(bt)
 
     def add_menu_bar(self):
         # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
