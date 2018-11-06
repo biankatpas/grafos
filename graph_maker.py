@@ -25,10 +25,13 @@ class GraphMaker:
 
     def insert_edge(self, vertex_a, vertex_b, peso, label=None):
         if vertex_a in self.vertices and vertex_b in self.vertices:
-            if label is None:
+            if label is None or label == "":
                 label = vertex_a+vertex_b
             if label not in self.edges:
-                self.edges[label] = Aresta(vertex_a, vertex_b, peso)
+                if peso != "":
+                    self.edges[label] = Aresta(vertex_a, vertex_b, peso)
+                else:
+                    self.edges[label] = Aresta(vertex_a, vertex_b)
                 self.vertices[vertex_a].add_adj_vertex(vertex_b)
                 self.vertices[vertex_b].add_adj_vertex(vertex_a)
                 if self.debug >= 1:
@@ -37,16 +40,25 @@ class GraphMaker:
             return "Aresta já existe no grafo. Não inserida."
         return "Inserir os vértices primeiro."
 
-    #TODO
     def remove_vertex(self, vertex):
-        # if vertex not in self.vertices:
-        #
-        #     message = "Vértice " + vertex + " removido."
-        #     for i in range(0, len(self.nodos)):
-        #         message = message + "\n" + self.return_vertex_element(i)
-        #     return message
-        # return "Vértice não encontrado no grafo."
-        return "TODO"
+        if vertex not in self.vertices:
+            return "Vértice não encontrado no grafo."
+        else:
+            print(self.vertices)
+            print(self.edges)
+            self.vertices.pop(vertex)
+            for i in self.vertices:
+                if vertex in self.vertices[i].adj:
+                    self.vertices[i].delete_adj_vertex(vertex)
+            delete = []
+            for i in self.edges:
+                if self.edges[i].origem == vertex or self.edges[i].destino == vertex:
+                    delete.append(i)
+            for d in delete:
+                self.edges.pop(d)
+            print(self.vertices)
+            print(self.edges)
+            return "Vértice " + vertex + " removido."
 
     #TODO
     def remove_edge(self, reference):
@@ -130,9 +142,9 @@ class GraphMaker:
                           "  Estimativa: " + str(self.vertices[i].estimativa))
         print()
 
-    # todo: algoritmos
+    # TODO
     def check_planar_graph(self):
-        return "vitor"
+        return "PLANAR"
 
     def breadth_search(self, vertex, evt):
         self.clear_vertex()
@@ -177,7 +189,7 @@ class GraphMaker:
 
     # TODO
     def prim(self, reference):
-        return "vitor"
+        return "PRIM"
 
     def greed_coloring(self, evt):
         self.clear_vertex()
@@ -210,7 +222,7 @@ class GraphMaker:
                         break
         return "Done Greedy Coloring"
 
-    #TODO
+    # TODO
     def floyd(self):
         print("FLOYD")
         return "FLOYD"

@@ -97,7 +97,7 @@ class EventHandler:
         else:
             value = self.gui.show_input_dialog(title="Remover aresta", text="Informe a referência da aresta")
             if value is not None:
-                ret = self.graph.remove_edge(int(value))
+                ret = self.graph.remove_edge(value)
                 self.print_feedback(ret)
                 self.on_draw_graph(evt)
 
