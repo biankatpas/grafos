@@ -44,8 +44,6 @@ class GraphMaker:
         if vertex not in self.vertices:
             return "Vértice não encontrado no grafo."
         else:
-            print(self.vertices)
-            print(self.edges)
             self.vertices.pop(vertex)
             for i in self.vertices:
                 if vertex in self.vertices[i].adj:
@@ -56,25 +54,18 @@ class GraphMaker:
                     delete.append(i)
             for d in delete:
                 self.edges.pop(d)
-            print(self.vertices)
-            print(self.edges)
             return "Vértice " + vertex + " removido."
 
-    #TODO
     def remove_edge(self, reference):
-        # if reference < len(self.labels):
-        #     e = self.labels[reference]
-        #     self.labels.pop(reference)
-        #     self.edges.pop(e)
-        #     if self.debug >= 1:
-        #         print(self.labels)
-        #         print(self.edges)
-        #     message = "Aresta " + str(reference) + " removida.\nAtenção: referências das arestas atualizadas."
-        #     for i in range(0, len(self.labels)):
-        #         message = message + "\n" + self.return_edge_element(i)
-        #     return message
-        # return "Aresta " + str(reference) + " não encontrada no grafo."
-        return "TODO"
+        if reference in self.edges:
+            a = self.edges[reference].origem
+            b = self.edges[reference].destino
+            self.edges.pop(reference)
+            self.vertices[a].delete_adj_vertex(b)
+            self.vertices[b].delete_adj_vertex(a)
+            return "Aresta " + str(reference) + " removida."
+        else:
+            return "Aresta " + str(reference) + " não encontrada no grafo."
 
     def check_adjacency(self, vertex_a, vertex_b):
         if vertex_a in self.vertices and vertex_b in self.vertices:
