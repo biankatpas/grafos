@@ -124,12 +124,12 @@ class GraphMaker:
         print("Dict edges: " + str(self.edges))
         if self.debug >= 2:
             for i in self.vertices:
-                print("Vertice: " + i +
+                print("Vértice: " + i +
                       "   Adjs: " + str(self.vertices[i].adj) +
                       "   Cor Atual: " + str(self.vertices[i].color))
                 if self.debug >= 3:
                     print("Vértice: " + i +
-                          "  Predecesor: " + str(self.vertices[i].precedente) +
+                          "  Predecessor: " + str(self.vertices[i].precedente) +
                           "  Estimativa: " + str(self.vertices[i].estimativa))
         print()
 
@@ -215,7 +215,6 @@ class GraphMaker:
 
     # TODO
     def floyd(self):
-        print("FLOYD")
         return "FLOYD"
 
     def dijkstra(self, vertex, evt):
@@ -309,7 +308,7 @@ class GraphMaker:
     def set_color_on_edges(self, evt, color='green'):
         for i in self.vertices:
             self.vertices[i].color = 'cyan'
-            predecesor = self.vertices[i].precedente
-            if predecesor != self.vertices[i].name:
-                self.edges[predecesor + self.vertices[i].name].color = color
+            predecessor = self.vertices[i].precedente
+            if predecessor != self.vertices[i].name:
+                self.edges[predecessor + self.vertices[i].name].color = color
         self.evt.on_draw_graph(evt)
