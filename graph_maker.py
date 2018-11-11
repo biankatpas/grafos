@@ -211,7 +211,7 @@ class GraphMaker:
                             self.debug_version()
                             self.evt.on_draw_graph(evt)
                         break
-        return "Done Greedy Coloring"
+        return "GREEDY COLORING DONE"
 
     # TODO
     def floyd(self):
@@ -254,6 +254,11 @@ class GraphMaker:
         time.sleep(SPEED * 2)
         self.set_color_on_edges(evt)
         return "DIJKSTRA DONE"
+
+    def a_star(self, origin, destiny, evt):
+        print(origin)
+        print(destiny)
+        return "A* DONE"
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:

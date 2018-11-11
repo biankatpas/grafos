@@ -197,7 +197,16 @@ class EventHandler:
         self.on_draw_graph(evt)
 
     def on_a_star(self, evt):
-        print('to-do')
+        values = []
+        v = self.gui.show_input_dialog(title="Vértice inicial", text="Informe o vértice inicial")
+        if v is not None:
+            values.append(v)
+        v = self.gui.show_input_dialog(title="Vértice final", text="Informe o vértice final")
+        if v is not None:
+            values.append(v)
+        ret = self.graph.a_star(values[0], values[1], evt)
+        self.print_feedback(ret)
+        self.on_draw_graph(evt)
 
     def on_exit(self, event):
         self.gui.Close(True)
