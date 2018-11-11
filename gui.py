@@ -14,7 +14,6 @@ class Gui(wx.Frame):
     def __init__(self, *args, **kw):
         super(Gui, self).__init__(*args, **kw)
         self.Center()
-        # self.SetMaxSize(self.GetSize())
         self.SetMinSize(self.GetSize())
         self.SetBackgroundColour(colour=wx.WHITE)
         self.scrolled_panel = scrolled.ScrolledPanel(self, -1, size=(914, 650), pos=(420,0) , style=wx.SUNKEN_BORDER)

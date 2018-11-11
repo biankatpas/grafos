@@ -14,7 +14,7 @@ class GraphMaker:
         self.evt = evt
         self.edges = {}
         self.vertices = {}
-        self.label_type = 0
+        self.label_type = 1
 
     def insert_vertex(self, vertex, pos=None):
         if vertex not in self.vertices:
@@ -112,14 +112,17 @@ class GraphMaker:
             self.gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             # APRESENTAR NOME E PESO
-            if self.label_type:
-                print('bosta')
+            if self.label_type == 2:
                 self.gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
                         style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS PESO
-            else:
+            elif self.label_type == 1:
                 self.gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
                         style='filled', color=str(self.edges[e].color))
+            # APRESENTAR APENAS NOME
+            elif self.label_type == 0:
+                self.gv.edge(self.edges[e].origem, self.edges[e].destino, e,
+                             style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         self.gv.render(view=False)  # just render and save graph image
 
@@ -265,6 +268,7 @@ class GraphMaker:
         self.clear_graph()
         self.evt.on_draw_graph(evt)
         self.directed = False
+        self.label_type = 0
         message += self.set_graph()
         self.evt.on_draw_graph(evt)
         message += self.a_star(origin, destiny, evt)
@@ -317,7 +321,6 @@ class GraphMaker:
             print('abertos restantes:')
             for i in abertos:
                 print(i)
-
             # k += 1
             # if k == n:
             #     exit(0)
