@@ -267,7 +267,6 @@ class GraphMaker:
         message = ""
         self.clear_graph()
         self.evt.on_draw_graph(evt)
-        self.directed = False
         self.label_type = 0
         message += self.set_graph()
         self.evt.on_draw_graph(evt)
@@ -291,10 +290,12 @@ class GraphMaker:
         while pai != destiny:
             print('pai', pai)
             print('filhos:')
+            self.vertices[pai].color = 'red'
             for filho in self.vertices[pai].adj:
-                path.append((pai, filho))
                 if filho not in abertos and filho not in fechados:
                     print(filho)
+                    path.append((filho, pai))
+                    self.vertices[filho].color = 'cyan'
                     abertos.append(filho)
             print('abertos:')
             distancias = []
@@ -324,10 +325,29 @@ class GraphMaker:
             # k += 1
             # if k == n:
             #     exit(0)
-        print('fim',pai)
-        print('caminho:', path)
+            if self.debug >= 3:
+                time.sleep(SPEED)
+                self.debug_version()
+                self.evt.on_draw_graph(evt)
 
-        return "A* DONE"
+        print('achou destino:',pai)
+        predecessores = [destiny]
+        node = destiny
+        while node != origin:
+            for i in path:
+                if i[0] == node:
+                    predecessores.append(i[1])
+                    node = i[1]
+        predecessores.reverse()
+        caminho = ""
+        for i in range(0, len(predecessores)-1):
+            caminho = caminho + predecessores[i] + '->'
+        caminho = caminho + predecessores[-1]
+        distancia = self.manhattan(self.vertices[caminho[0]].position, self.vertices[caminho[-1]].position)
+        print('caminho:', caminho)
+        print('distancia:', distancia)
+        # time.sleep(SPEED * 2)
+        return 'caminho = ' + caminho + "\ndistância (KM) = " + str(distancia) + "\nA* DONE"
 
     def manhattan(self, p1, p2):
         return sum([abs(p1[i] - p2[i]) for i in range(len(p1))]) / len(p1)
@@ -379,6 +399,7 @@ class GraphMaker:
                  'B,A', 'B,E', 'B,F', 'B,J', 'B,R', 'B,S', 'B,T',
                  'C,F', 'C,G', 'C,I',
                  'D,L', 'D,M', 'D,R',
+                 'E,A', 'E,B',
                  'F,J', 'F,B', 'F,S', 'F,C',
                  'G,I', 'G,C', 'G,S', 'G,A',
                  'H,N', 'H,O', 'H,P',
@@ -389,7 +410,7 @@ class GraphMaker:
                  'M,D', 'M,K', 'M,O',
                  'N,P', 'N,R', 'N,T', 'N,H',
                  'O,R', 'O,M', 'O,H',
-                 'P,T', 'P,N', 'P,H', 'P,K',
+                 'P,T', 'P,N', 'P,H', 'P,K', 'P,J',
                  'Q,I', 'Q,J',
                  'R,N', 'R,O', 'R,D', 'R,L', 'R,B',
                  'S,F', 'S,B', 'S,G', 'S,A',
