@@ -340,13 +340,19 @@ class GraphMaker:
                     node = i[1]
         predecessores.reverse()
         caminho = ""
+        arestas = ""
         for i in range(0, len(predecessores)-1):
             caminho = caminho + predecessores[i] + '->'
+            arestas = arestas + predecessores[i]+predecessores[i+1] + ','
         caminho = caminho + predecessores[-1]
         distancia = self.manhattan(self.vertices[caminho[0]].position, self.vertices[caminho[-1]].position)
-        print('caminho:', caminho)
-        print('distancia:', distancia)
-        # time.sleep(SPEED * 2)
+        print('caminho: ', caminho)
+        print('distancia: ', distancia)
+        print('arestas: ', arestas)
+        e = arestas.split(',')
+        for i in e[:len(e)-1]:
+            self.edges[i].color = 'green'
+        self.evt.on_draw_graph(evt)
         return 'caminho = ' + caminho + "\ndistância (KM) = " + str(distancia) + "\nA* DONE"
 
     def manhattan(self, p1, p2):
