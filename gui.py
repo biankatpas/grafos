@@ -14,7 +14,7 @@ class Gui(wx.Frame):
     def __init__(self, *args, **kw):
         super(Gui, self).__init__(*args, **kw)
         self.Center()
-        self.SetMaxSize(self.GetSize())
+        # self.SetMaxSize(self.GetSize())
         self.SetMinSize(self.GetSize())
         self.SetBackgroundColour(colour=wx.WHITE)
         self.scrolled_panel = scrolled.ScrolledPanel(self, -1, size=(914, 650), pos=(420,0) , style=wx.SUNKEN_BORDER)
@@ -25,11 +25,16 @@ class Gui(wx.Frame):
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
-        self.hslider = wx.Slider(self, -1, 100, 50, 150, size=(394, -1), style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS)
-        self.hslider.SetPosition((10,610))
-        self.hslider.Bind(wx.EVT_SCROLL, self.on_scroll)
         self.factor = 1
         self.evt = EventHandler(self)
+
+        # main sizer
+        mainSizer = wx.GridSizer(1, 2, 1, 1)
+        mainSizer.Add(self.text_area, 0, wx.EXPAND)
+        mainSizer.Add(self.scrolled_panel, 0, wx.EXPAND)
+        # finally give the sizer to the frame
+        self.SetSizer(mainSizer)
+        self.Layout()
 
     def add_menu_bar(self):
         # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -55,6 +60,9 @@ class Gui(wx.Frame):
         self.a_star = self.graphMenu.Append(-1, "&A*", "Executa o algoritmo A*")
         self.graphMenu.AppendSeparator()
         self.exitItem = self.graphMenu.Append(wx.ID_EXIT)
+        self.editMenu = wx.Menu()
+        self.zoom_in = self.editMenu.Append(-1, "&Zoom In", "Aumentar o Zoom")
+        self.zoom_out = self.editMenu.Append(-1, "&Zoom Out", "Diminuir o Zoom")
         # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # menu bar
         # Make the menu bar and add the two menus to it. The '&' defines
@@ -63,6 +71,7 @@ class Gui(wx.Frame):
         # triggered from the keyboard.
         self.menuBar = wx.MenuBar()
         self.menuBar.Append(self.graphMenu, "&Grafo")
+        self.menuBar.Append(self.editMenu, "&Exibir")
         # Finally, associate a handler function with the EVT_MENU event for
         # each of the menu items. That means that when that menu item is
         # activated then the associated handler function will be called.
@@ -83,6 +92,8 @@ class Gui(wx.Frame):
         self.Bind(wx.EVT_MENU, self.evt.on_dijkstra, self.dijkstra)
         self.Bind(wx.EVT_MENU, self.evt.on_a_star, self.a_star)
         self.Bind(wx.EVT_MENU, self.evt.on_exit, self.exitItem)
+        self.Bind(wx.EVT_MENU, self.on_zoom_in, self.zoom_in)
+        self.Bind(wx.EVT_MENU, self.on_zoom_out, self.zoom_out)
 
         # desabilita as opções de menu não implementadas
         self.graphMenu.Enable(self.graphMenu.GetMenuItems()[8].GetId(), False)
@@ -107,9 +118,10 @@ class Gui(wx.Frame):
         image = wx.Image(file)
         apil = self.imageToPil(image)
         width, height = apil.size
-        apilr = apil.resize((int(width * self.factor), int(height * self.factor)), PIL.Image.NEAREST)
-        myWxImage = wx.Image(apilr.size[0], apilr.size[1])
-        myWxImage.SetData(apilr.convert('RGB').tobytes())
+        if self.factor != 1:
+            apil = apil.resize((int(width * self.factor), int(height * self.factor)), PIL.Image.BILINEAR)
+        myWxImage = wx.Image(apil.size[0], apil.size[1])
+        myWxImage.SetData(apil.convert('RGB').tobytes())
         self.bitmap = myWxImage.ConvertToBitmap()
         self.scrolled_panel.Bind(wx.EVT_PAINT, self.on_paint)
         self.scrolled_panel.Refresh()
@@ -126,9 +138,12 @@ class Gui(wx.Frame):
         dc = wx.PaintDC(self.scrolled_panel)
         dc.DrawBitmap(self.bitmap, (0, 0))
 
-    def on_scroll(self, evt):
-        ival = self.hslider.GetValue()
-        self.factor = ival/100
+    def on_zoom_in(self, evt):
+        self.factor += 0.25
+        self.draw_graph()
+
+    def on_zoom_out(self, evt):
+        self.factor -= 0.25
         self.draw_graph()
 
     def main_loop(self):

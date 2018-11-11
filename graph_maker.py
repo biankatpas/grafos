@@ -16,11 +16,6 @@ class GraphMaker:
         self.vertices = {}
         self.label_type = 0
 
-        if self.directed:
-            self.gv = Digraph('G', filename='graph.gv', format='png')
-        else:
-            self.gv = Graph('G', filename='graph.gv', format='png')
-
     def insert_vertex(self, vertex, pos=None):
         if vertex not in self.vertices:
             self.vertices[vertex] = Vertice(vertex, pos)
@@ -109,7 +104,10 @@ class GraphMaker:
 
     def draw_graph(self):
         # draw graph using graphviz lib
-        self.gv.clear()
+        if self.directed:
+            self.gv = Digraph('G', filename='graph.gv', format='png')
+        else:
+            self.gv = Graph('G', filename='graph.gv', format='png')
         for v in self.vertices:
             self.gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
@@ -266,6 +264,7 @@ class GraphMaker:
         message = ""
         self.clear_graph()
         self.evt.on_draw_graph(evt)
+        self.directed = False
         message += self.set_graph()
         self.evt.on_draw_graph(evt)
         message += self.a_star(origin, destiny, evt)
@@ -323,7 +322,8 @@ class GraphMaker:
             # if k == n:
             #     exit(0)
         print('fim',pai)
-        print('pais&filhos', path)
+        print('caminho:', path)
+
         return "A* DONE"
 
     def manhattan(self, p1, p2):
