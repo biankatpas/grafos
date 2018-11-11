@@ -29,8 +29,6 @@ class Gui(wx.Frame):
         self.hslider.SetPosition((10,610))
         self.hslider.Bind(wx.EVT_SCROLL, self.on_scroll)
         self.factor = 1
-        self.button_id = 0
-        self.buttons = []
         self.evt = EventHandler(self)
 
     def add_menu_bar(self):
@@ -38,22 +36,23 @@ class Gui(wx.Frame):
         # menu itens
         self.graphMenu = wx.Menu()
         # The "\t..." syntax defines an accelerator key that also triggers the same event
-        self.insert_vertex = self.graphMenu.Append(-1, "&Inserir Vértice...\tCtrl-V", "Insere um vértice no grafo!")
-        self.insert_edge = self.graphMenu.Append(-1, "&Inserir Aresta...\tCtrl-A", "Insere uma aresta no grafo!")
-        self.remove_vertex = self.graphMenu.Append(-1, "&Remover Vértice...\tCtrl-Shift-V", "Remove um vértice do grafo!")
-        self.remove_edge = self.graphMenu.Append(-1, "&Remover Aresta...\tCtrl-Shift-A", "Remove uma aresta do grafo!")
+        self.insert_vertex = self.graphMenu.Append(-1, "&Inserir Vértice", "Insere um vértice no grafo!")
+        self.insert_edge = self.graphMenu.Append(-1, "&Inserir Aresta", "Insere uma aresta no grafo!")
+        self.remove_vertex = self.graphMenu.Append(-1, "&Remover Vértice", "Remove um vértice do grafo!")
+        self.remove_edge = self.graphMenu.Append(-1, "&Remover Aresta", "Remove uma aresta do grafo!")
         self.check_adjacency = self.graphMenu.Append(-1, "&Verificar Adjacência", "Verificar se dois vértices são adjacentes!")
-        self.return_edge_element = self.graphMenu.Append(-1, "&Retornar elemento da Aresta", "Retorna o elemento da aresta!")
-        self.return_vertex_element = self.graphMenu.Append(-1, "&Retornar elemento do Vértice", "Retorna o elemento do vértice!")
-        self.return_vertices_references_from_edge = self.graphMenu.Append(-1, "&Retornar a referência dos vértices da Aresta", "Retorna a referência dos dois vértices de uma aresta!")
-        self.check_planar_graph = self.graphMenu.Append(-1, "&IVerificar planaridade...\tCtrl-P", "Verifica se o grafo é planar!")
-        self.breadth_search = self.graphMenu.Append(-1, "&Busca em largura...\tCtrl-B", "Efetua a busca em largura no grafo!")
-        self.depth_search = self.graphMenu.Append(-1, "&Busca em profundidade...\tCtrl-D", "Efetua a busca em profundidade no grafo!")
-        self.prim = self.graphMenu.Append(-1, "&PRIM...\tCtrl-I", "Executa o algoritmo de PRIM!")
+        self.return_edge_element = self.graphMenu.Append(-1, "&Retornar Elemento da Aresta", "Retorna o elemento da aresta!")
+        self.return_vertex_element = self.graphMenu.Append(-1, "&Retornar Elemento do Vértice", "Retorna o elemento do vértice!")
+        self.return_vertices_references_from_edge = self.graphMenu.Append(-1, "&Retornar a Referência dos Vértices da Aresta", "Retorna a referência dos dois vértices de uma aresta!")
+        self.check_planar_graph = self.graphMenu.Append(-1, "&Verificar Planaridade", "Verifica se o grafo é planar!")
+        self.breadth_search = self.graphMenu.Append(-1, "&Busca em Largura", "Efetua a busca em largura no grafo!")
+        self.depth_search = self.graphMenu.Append(-1, "&Busca em Profundidade", "Efetua a busca em profundidade no grafo!")
+        self.prim = self.graphMenu.Append(-1, "&PRIM", "Executa o algoritmo de PRIM!")
         self.graphMenu.AppendSeparator()
-        self.green_coloring = self.graphMenu.Append(-1, "&Coloração gulosa...\tCtrl-G", "Executa o algorimo de coloração gulosa!")
-        self.floyd = self.graphMenu.Append(-1, "&Floyd...\tCtrl-F", "Executa o algorimo floyd!")
-        self.dijkstra = self.graphMenu.Append(-1, "&dijkstra...\tCtrl-K", "Executa o algorimo dijkstra!")
+        self.green_coloring = self.graphMenu.Append(-1, "&Coloração Gulosa", "Executa o algorimo de coloração gulosa!")
+        self.floyd = self.graphMenu.Append(-1, "&Floyd", "Executa o algorimo floyd!")
+        self.dijkstra = self.graphMenu.Append(-1, "&Dijkstra", "Executa o algorimo dijkstra!")
+        self.a_star = self.graphMenu.Append(-1, "&A*", "Executa o algoritmo A*")
         self.graphMenu.AppendSeparator()
         self.exitItem = self.graphMenu.Append(wx.ID_EXIT)
         # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -82,7 +81,13 @@ class Gui(wx.Frame):
         self.Bind(wx.EVT_MENU, self.evt.on_greed_coloring, self.green_coloring)
         self.Bind(wx.EVT_MENU, self.evt.on_floyd, self.floyd)
         self.Bind(wx.EVT_MENU, self.evt.on_dijkstra, self.dijkstra)
+        self.Bind(wx.EVT_MENU, self.evt.on_a_star, self.a_star)
         self.Bind(wx.EVT_MENU, self.evt.on_exit, self.exitItem)
+
+        # desabilita as opções de menu não implementadas
+        self.graphMenu.Enable(self.graphMenu.GetMenuItems()[8].GetId(), False)
+        self.graphMenu.Enable(self.graphMenu.GetMenuItems()[11].GetId(), False)
+
         # Give the menu bar to the frame
         self.SetMenuBar(self.menuBar)
 
@@ -125,9 +130,6 @@ class Gui(wx.Frame):
         ival = self.hslider.GetValue()
         self.factor = ival/100
         self.draw_graph()
-
-    def get_buttons(self):
-        return self.buttons
 
     def main_loop(self):
         app.MainLoop()

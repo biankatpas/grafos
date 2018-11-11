@@ -14,7 +14,7 @@ if "DEBUG" in os.environ:
 
 W_SIZE = 1080
 H_SIZE = 720
-g = Gui(None, title="Trb M1 - Grafos", size=(W_SIZE, H_SIZE))
+g = Gui(None, title="Trb M2 - Grafos", size=(W_SIZE, H_SIZE))
 e = EventHandler(g, DEBUG)
 
 g.set_evt_handler(e)
