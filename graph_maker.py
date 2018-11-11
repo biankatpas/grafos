@@ -276,7 +276,6 @@ class GraphMaker:
         abertos = []
         fechados = []
         path = []
-        distancias = []
 
         print('org',origin)
         print('dst',destiny)
@@ -295,6 +294,7 @@ class GraphMaker:
                     print(filho)
                     abertos.append(filho)
             print('abertos:')
+            distancias = []
             for i in abertos:
                 print(self.vertices[i].name, self.vertices[i].position)
                 p1= self.vertices[origin].position
@@ -311,8 +311,7 @@ class GraphMaker:
             print('fechados:')
             for i in fechados:
                 print(i)
-            pai = distancias[0][0]
-            distancias.clear()
+            pai = distancias[0][0] # list of tuples [(vertex, distance)]
             print('novo pai', pai)
             if pai in abertos:
                 abertos.remove(pai)
