@@ -256,9 +256,17 @@ class GraphMaker:
         return "DIJKSTRA DONE"
 
     def a_star(self, origin, destiny, evt):
+        abertos = []
+        fechados = []
         print(origin)
         print(destiny)
         return "A* DONE"
+
+    def manhattan(p1, p2):
+        return sum([abs(p1[i] - p2[i]) for i in range(len(p1))]) / len(p1)
+
+    def get_coordinates(self):
+        print('to-do')
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
