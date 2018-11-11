@@ -15,6 +15,7 @@ class GraphMaker:
         self.edges = {}
         self.vertices = {}
         self.coordinates = {}
+        self.label_type = 0
 
         if self.directed:
             self.gv = Digraph('G', filename='graph.gv', format='png')
@@ -114,11 +115,14 @@ class GraphMaker:
             self.gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             # APRESENTAR NOME E PESO
-            # gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
-            #         style='filled', color=str(self.edges[e].color))
+            if self.label_type:
+                print('bosta')
+                self.gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
+                        style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS PESO
-            self.gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
-                    style='filled', color=str(self.edges[e].color))
+            else:
+                self.gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
+                        style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
         self.gv.render(view=False)  # just render and save graph image
 
@@ -268,6 +272,7 @@ class GraphMaker:
         message += self.a_star(origin, destiny, evt)
         return message
 
+    # TODO: https://www.youtube.com/watch?v=o5_mqZKhTvw&t=59s
     def a_star(self, origin, destiny, evt):
         abertos = []
         fechados = []
@@ -283,9 +288,10 @@ class GraphMaker:
         self.edges.clear()
 
     def set_graph(self):
-       message = ""
-       message = message + self.set_vertices() + '\n'
-       message = message + self.set_edges() + '\n'
+       message = "Criando o Grafo do A*\n"
+       message = message + self.set_vertices()
+       message = message + self.set_edges()
+       message += "Grafo do A* Inserido\n"
        return message
 
     def set_vertices(self):
