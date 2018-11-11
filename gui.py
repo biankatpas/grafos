@@ -25,7 +25,7 @@ class Gui(wx.Frame):
         self.text_area.SetFont(wx.Font(13, wx.DEFAULT, wx.NORMAL, wx.NORMAL))
         self.text_area.AppendText("Nothing have done yet!" + "\n\n")
         self.text_area.SetToolTip('Saída')
-        self.hslider = wx.Slider(self, -1, 100, 100, 200, size=(394, -1), style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS)
+        self.hslider = wx.Slider(self, -1, 100, 50, 150, size=(394, -1), style=wx.SL_HORIZONTAL | wx.SL_AUTOTICKS | wx.SL_LABELS)
         self.hslider.SetPosition((10,610))
         self.hslider.Bind(wx.EVT_SCROLL, self.on_scroll)
         self.factor = 1

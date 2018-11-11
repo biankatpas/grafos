@@ -3,7 +3,7 @@ from gui import Gui
 from event_handler import EventHandler
 
 
-DEBUG = 0
+DEBUG = 50
 # 1 - Apresentar Dict vertices e edges
 # 2 - Apresentar Adjs e cor
 # 3 - Apresentar Predecessor e Estimativa

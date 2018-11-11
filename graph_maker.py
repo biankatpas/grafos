@@ -14,10 +14,16 @@ class GraphMaker:
         self.evt = evt
         self.edges = {}
         self.vertices = {}
+        self.coordinates = {}
 
-    def insert_vertex(self, vertex):
+        if self.directed:
+            self.gv = Digraph('G', filename='graph.gv', format='png')
+        else:
+            self.gv = Graph('G', filename='graph.gv', format='png')
+
+    def insert_vertex(self, vertex, pos=None):
         if vertex not in self.vertices:
-            self.vertices[vertex] = Vertice(vertex)
+            self.vertices[vertex] = Vertice(vertex, pos)
             if self.debug >= 1:
                 self.debug_version()
             return "Inserido vértice: " + vertex
@@ -103,21 +109,18 @@ class GraphMaker:
 
     def draw_graph(self):
         # draw graph using graphviz lib
-        if self.directed:
-            gv = Digraph('G', filename='graph.gv', format='png')
-        else:
-            gv = Graph('G', filename='graph.gv', format='png')
+        self.gv.clear()
         for v in self.vertices:
-            gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
+            self.gv.node(self.vertices[v].name, style='filled', fillcolor=str(self.vertices[v].color))
         for e in self.edges:
             # APRESENTAR NOME E PESO
             # gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
             #         style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS PESO
-            gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
+            self.gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
                     style='filled', color=str(self.edges[e].color))
         # gv.view()            # render, save and show graph image
-        gv.render(view=False)  # just render and save graph image
+        self.gv.render(view=False)  # just render and save graph image
 
     def debug_version(self):
         print("Dict vertices: " + str(self.vertices))
@@ -130,7 +133,8 @@ class GraphMaker:
                 if self.debug >= 3:
                     print("Vértice: " + i +
                           "  Predecessor: " + str(self.vertices[i].precedente) +
-                          "  Estimativa: " + str(self.vertices[i].estimativa))
+                          "  Estimativa: " + str(self.vertices[i].estimativa) +
+                          "  Position: " + str(self.vertices[i].position))
         print()
 
     # TODO
@@ -255,6 +259,15 @@ class GraphMaker:
         self.set_color_on_edges(evt)
         return "DIJKSTRA DONE"
 
+    def call_a_star(self, origin, destiny, evt):
+        message = ""
+        self.clear_graph()
+        self.evt.on_draw_graph(evt)
+        message += self.set_graph()
+        self.evt.on_draw_graph(evt)
+        message += self.a_star(origin, destiny, evt)
+        return message
+
     def a_star(self, origin, destiny, evt):
         abertos = []
         fechados = []
@@ -265,8 +278,65 @@ class GraphMaker:
     def manhattan(p1, p2):
         return sum([abs(p1[i] - p2[i]) for i in range(len(p1))]) / len(p1)
 
-    def get_coordinates(self):
-        print('to-do')
+    def clear_graph(self):
+        self.vertices.clear()
+        self.edges.clear()
+
+    def set_graph(self):
+       message = ""
+       message = message + self.set_vertices() + '\n'
+       message = message + self.set_edges() + '\n'
+       return message
+
+    def set_vertices(self):
+        nodes = {'A': (950, 231),
+                 'B': (607, 486),
+                 'C': (891, 762),
+                 'D': (456, 19 ),
+                 'E': (821, 445),
+                 'F': (615, 792),
+                 'G': (922, 738),
+                 'H': (176, 406),
+                 'I': (935, 917),
+                 'J': (410, 894),
+                 'K': (58 , 353),
+                 'L': (813, 10 ),
+                 'M': (139, 203),
+                 'N': (199, 604),
+                 'O': (272, 199),
+                 'P': (15 , 747),
+                 'Q': (445, 932),
+                 'R': (466, 419),
+                 'S': (846, 525),
+                 'T': (203, 672)}
+
+        message = ""
+        for i in nodes:
+            # print(i, nodes[i])
+            message = message + self.insert_vertex(i, nodes[i]) + '\n'
+        return message
+
+    def set_edges(self):
+        edges = ('A,B', 'A,E', 'A,G', 'A,L', 'A,S',
+                 'B,E', 'B,F', 'B,J', 'B,R', 'B,S', 'B,T',
+                 'C,F', 'C,G', 'C,I',
+                 'D,L', 'D,M', 'D,R',
+                 'F,J', 'F,S',
+                 'G,I', 'G,S',
+                 'H,N', 'H,O', 'H,P',
+                 'J,P', 'J,Q', 'J,T',
+                 'K,M', 'K,P',
+                 'L,R',
+                 'N,P', 'N,R', 'N,T',
+                 'O,R', 'O,M',
+                 'P,T',
+                 'Q,I')
+
+        message = ""
+        for i in edges:
+            vertex_a, vertex_b = i.split(',')
+            message = message + self.insert_edge(vertex_a, vertex_b, "") + '\n'
+        return message
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:

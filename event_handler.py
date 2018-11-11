@@ -204,7 +204,7 @@ class EventHandler:
         v = self.gui.show_input_dialog(title="Vértice final", text="Informe o vértice final")
         if v is not None:
             values.append(v)
-        ret = self.graph.a_star(values[0], values[1], evt)
+        ret = self.graph.call_a_star(values[0], values[1], evt)
         self.print_feedback(ret)
         self.on_draw_graph(evt)
 
