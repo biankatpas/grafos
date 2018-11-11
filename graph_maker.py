@@ -14,7 +14,6 @@ class GraphMaker:
         self.evt = evt
         self.edges = {}
         self.vertices = {}
-        self.coordinates = {}
         self.label_type = 0
 
         if self.directed:
@@ -276,12 +275,63 @@ class GraphMaker:
     def a_star(self, origin, destiny, evt):
         abertos = []
         fechados = []
-        print(origin)
-        print(destiny)
+        path = []
+        distancias = []
+
+        print('org',origin)
+        print('dst',destiny)
+        print()
+
+        # n = 4
+        # k = 0
+
+        pai = origin
+        while pai != destiny:
+            print('pai', pai)
+            print('filhos:')
+            for filho in self.vertices[pai].adj:
+                path.append((pai, filho))
+                if filho not in abertos and filho not in fechados:
+                    print(filho)
+                    abertos.append(filho)
+            print('abertos:')
+            for i in abertos:
+                print(self.vertices[i].name, self.vertices[i].position)
+                p1= self.vertices[origin].position
+                p2= self.vertices[i].position
+                p3= self.vertices[destiny].position
+                g = self.manhattan(p1, p2) # g = custo do nodo inicial até o nodo atual
+                h = self.manhattan(p2, p3) # h = custo do nodo atual ate o nodo destino
+                f = self.f(g, h)           # f = custo total
+                distancias.append((self.vertices[i].name, f))
+            print('distancias antes', distancias)
+            distancias.sort(key=lambda tup: tup[1])
+            print('distancias depois', distancias)
+            fechados.append(pai)
+            print('fechados:')
+            for i in fechados:
+                print(i)
+            pai = distancias[0][0]
+            distancias.clear()
+            print('novo pai', pai)
+            if pai in abertos:
+                abertos.remove(pai)
+            print('abertos restantes:')
+            for i in abertos:
+                print(i)
+
+            # k += 1
+            # if k == n:
+            #     exit(0)
+        print('fim',pai)
+        print('pais&filhos', path)
         return "A* DONE"
 
-    def manhattan(p1, p2):
+    def manhattan(self, p1, p2):
         return sum([abs(p1[i] - p2[i]) for i in range(len(p1))]) / len(p1)
+
+    def f(self,g,h):
+        return g + h
 
     def clear_graph(self):
         self.vertices.clear()
@@ -324,19 +374,24 @@ class GraphMaker:
 
     def set_edges(self):
         edges = ('A,B', 'A,E', 'A,G', 'A,L', 'A,S',
-                 'B,E', 'B,F', 'B,J', 'B,R', 'B,S', 'B,T',
+                 'B,A', 'B,E', 'B,F', 'B,J', 'B,R', 'B,S', 'B,T',
                  'C,F', 'C,G', 'C,I',
                  'D,L', 'D,M', 'D,R',
-                 'F,J', 'F,S',
-                 'G,I', 'G,S',
+                 'F,J', 'F,B', 'F,S', 'F,C',
+                 'G,I', 'G,C', 'G,S', 'G,A',
                  'H,N', 'H,O', 'H,P',
-                 'J,P', 'J,Q', 'J,T',
+                 'I,Q', 'I,C', 'I,G',
+                 'J,P', 'J,Q', 'J,T', 'J,B', 'J,F',
                  'K,M', 'K,P',
-                 'L,R',
-                 'N,P', 'N,R', 'N,T',
-                 'O,R', 'O,M',
-                 'P,T',
-                 'Q,I')
+                 'L,R', 'L,A', 'L,D',
+                 'M,D', 'M,K', 'M,O',
+                 'N,P', 'N,R', 'N,T', 'N,H',
+                 'O,R', 'O,M', 'O,H',
+                 'P,T', 'P,N', 'P,H', 'P,K',
+                 'Q,I', 'Q,J',
+                 'R,N', 'R,O', 'R,D', 'R,L', 'R,B',
+                 'S,F', 'S,B', 'S,G', 'S,A',
+                 'T,P', 'T,J', 'T,B')
 
         message = ""
         for i in edges:
