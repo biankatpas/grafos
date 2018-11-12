@@ -221,9 +221,24 @@ class GraphMaker:
                         break
         return "GREEDY COLORING DONE"
 
-    # TODO
     def floyd(self):
-        return "FLOYD"
+        self.clear_estimativa()
+        self.clear_edges()
+        self.clear_vertex()
+        matrixEst = self.createStarterMatrix()
+        matrixPredec = self.createPredecMatrix()
+        self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO 0')
+        self.printMatrix(matrixPredec, 'MATRIZ PREDECESOR - ITERACAO 0')
+        size = range(len(matrixEst))
+        for k in size:
+            for i in size:
+                for j in size:
+                    if matrixEst[i][k] + matrixEst[k][j] < matrixEst[i][j]:
+                        matrixEst[i][j] = matrixEst[i][k] + matrixEst[k][j]
+                        matrixPredec[i][j] = matrixPredec[k][j]
+            self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO ' + str(k+1))
+            self.printMatrix(matrixPredec, 'MATRIZ PREDECESOR - ITERACAO ' + str(k+1))
+        return "FLOYD DONE"
 
     def dijkstra(self, vertex, evt):
         self.clear_estimativa()
@@ -485,3 +500,49 @@ class GraphMaker:
             if predecessor != self.vertices[i].name:
                 self.edges[predecessor + self.vertices[i].name].color = color
         self.evt.on_draw_graph(evt)
+
+    def createStarterMatrix(self):
+        matriz = []
+        for i in self.vertices:
+            linha = []
+            for j in self.vertices:
+                if i == j:
+                    linha.append(0)
+                elif self.check_adj(i, j):
+                    linha.append(self.edges[self.vertices[i].name + self.vertices[j].name].peso)
+                else:
+                    linha.append(9999)
+            matriz.append(linha)
+        return matriz
+
+    def createPredecMatrix(self):
+        matriz = []
+        for i in self.vertices:
+            linha = []
+            for j in self.vertices:
+                if i == j:
+                    linha.append(0)
+                else:
+                    linha.append(i)
+            matriz.append(linha)
+        return matriz
+
+    def check_adj(self, u, v):
+        if v in self.vertices[u].adj:
+            if self.directed:
+                if self.vertices[u].name + self.vertices[v].name in self.edges:
+                    return True
+                else:
+                    return False
+            else:
+                return True
+        else:
+            return False
+
+    def printMatrix(self, matrix, text):
+        print('\n\n' + text)
+        for i in range(len(matrix)):
+            print(str(i) + ' - ', end='')
+            for j in matrix[i]:
+                print(str(j) + ' ', end='')
+            print()
