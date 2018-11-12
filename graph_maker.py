@@ -237,7 +237,7 @@ class GraphMaker:
         matrixEst = self.createStarterMatrix()
         matrixPredec = self.createPredecMatrix()
         self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO 0')
-        self.printMatrix(matrixPredec, 'MATRIZ PREDECESOR - ITERACAO 0')
+        self.printMatrix(matrixPredec, 'MATRIZ PREDECESSOR - ITERACAO 0')
         size = range(len(matrixEst))
         for k in size:
             for i in size:
@@ -246,7 +246,7 @@ class GraphMaker:
                         matrixEst[i][j] = matrixEst[i][k] + matrixEst[k][j]
                         matrixPredec[i][j] = matrixPredec[k][j]
             self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO ' + str(k+1))
-            self.printMatrix(matrixPredec, 'MATRIZ PREDECESOR - ITERACAO ' + str(k+1))
+            self.printMatrix(matrixPredec, 'MATRIZ PREDECESSOR - ITERACAO ' + str(k+1))
         return "FLOYD DONE"
 
     def dijkstra(self, vertex, evt):
