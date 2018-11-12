@@ -62,6 +62,7 @@ class Gui(wx.Frame):
         self.editMenu = wx.Menu()
         self.zoom_in = self.editMenu.Append(-1, "&Zoom In", "Aumentar o Zoom")
         self.zoom_out = self.editMenu.Append(-1, "&Zoom Out", "Diminuir o Zoom")
+        self.change_directed_status = self.editMenu.Append(-1, "&Directed", "Alterna status de Dirigido")
         # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         # menu bar
         # Make the menu bar and add the two menus to it. The '&' defines
@@ -93,6 +94,7 @@ class Gui(wx.Frame):
         self.Bind(wx.EVT_MENU, self.evt.on_exit, self.exitItem)
         self.Bind(wx.EVT_MENU, self.on_zoom_in, self.zoom_in)
         self.Bind(wx.EVT_MENU, self.on_zoom_out, self.zoom_out)
+        self.Bind(wx.EVT_MENU, self.evt.on_change_directed_status, self.change_directed_status)
 
         # desabilita as opções de menu não implementadas
         self.graphMenu.Enable(self.graphMenu.GetMenuItems()[8].GetId(), False)

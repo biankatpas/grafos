@@ -16,6 +16,15 @@ class GraphMaker:
         self.vertices = {}
         self.label_type = 1
 
+    def on_change_directed_status(self, evt):
+        self.clear_vertex()
+        self.clear_edges()
+        if self.directed:
+            self.directed = False
+        else:
+            self.directed = True
+        return self.directed
+
     def insert_vertex(self, vertex, pos=None):
         if vertex not in self.vertices:
             self.vertices[vertex] = Vertice(vertex, pos)

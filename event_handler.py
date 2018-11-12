@@ -8,6 +8,11 @@ class EventHandler:
         self.directed = True
         self.graph = GraphMaker(self, self.directed, self.debug)
 
+    def on_change_directed_status(self, evt):
+        self.directed = self.graph.on_change_directed_status(evt)
+        self.print_feedback("Directed: " + str(self.directed))
+        self.on_draw_graph(evt)
+
     def on_insert_vertex(self, evt):
         if self.debug >= 50:
             vertex = "S"
