@@ -140,11 +140,11 @@ class Gui(wx.Frame):
         dc.DrawBitmap(self.bitmap, (0, 0))
 
     def on_zoom_in(self, evt):
-        self.factor += 0.25
+        self.factor += 0.15
         self.draw_graph()
 
     def on_zoom_out(self, evt):
-        self.factor -= 0.25
+        self.factor -= 0.15
         self.draw_graph()
 
     def main_loop(self):

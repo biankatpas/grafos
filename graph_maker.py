@@ -297,7 +297,6 @@ class GraphMaker:
         message += self.a_star(origin, destiny, evt)
         return message
 
-    # TODO: https://www.youtube.com/watch?v=o5_mqZKhTvw&t=59s
     def a_star(self, origin, destiny, evt):
         abertos = []
         fechados = []
@@ -314,12 +313,12 @@ class GraphMaker:
         while pai != destiny:
             print('pai', pai)
             print('filhos:')
-            self.vertices[pai].color = 'red'
+            # self.vertices[pai].color = 'red'
             for filho in self.vertices[pai].adj:
                 if filho not in abertos and filho not in fechados:
                     print(filho)
                     path.append((filho, pai))
-                    self.vertices[filho].color = 'cyan'
+                    # self.vertices[filho].color = 'cyan'
                     abertos.append(filho)
             print('abertos:')
             distancias = []
@@ -349,10 +348,10 @@ class GraphMaker:
             # k += 1
             # if k == n:
             #     exit(0)
-            if self.debug >= 3:
-                time.sleep(SPEED)
-                self.debug_version()
-                self.evt.on_draw_graph(evt)
+            # if self.debug >= 3:
+            #     time.sleep(SPEED)
+                # self.debug_version()
+                # self.evt.on_draw_graph(evt)
 
         print('achou destino:',pai)
         predecessores = [destiny]
