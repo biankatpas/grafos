@@ -489,8 +489,12 @@ class GraphMaker:
         for i in self.edges:
             origem = self.edges[i].origem
             destino = self.edges[i].destino
-            if origem == u and destino == v:
-                return i
+            if self.directed:
+                if origem == u and destino == v:
+                    return i
+            else:
+                if origem == u and destino == v or origem == v and destino == u:
+                    return i
 
     def sort_dict(self, vet):
         sorted_vet = []
@@ -518,7 +522,10 @@ class GraphMaker:
                 if i == j:
                     linha.append(0)
                 elif self.check_adj(i, j):
-                    linha.append(self.edges[self.vertices[i].name + self.vertices[j].name].peso)
+                    if self.vertices[i].name + self.vertices[j].name in self.edges:
+                        linha.append(self.edges[self.vertices[i].name + self.vertices[j].name].peso)
+                    else:
+                        linha.append(self.edges[self.vertices[j].name + self.vertices[i].name].peso)
                 else:
                     linha.append(9999)
             matriz.append(linha)
