@@ -213,6 +213,9 @@ class EventHandler:
         self.print_feedback(ret)
         self.on_draw_graph(evt)
 
+    def on_tsp(self, evt):
+        print('O menu vale 0.63? :)')
+
     def on_exit(self, event):
         self.gui.Close(True)
 
