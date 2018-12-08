@@ -214,7 +214,21 @@ class EventHandler:
         self.on_draw_graph(evt)
 
     def on_tsp(self, evt):
-        print('O menu vale 0.63? :)')
+        values = []
+        v = self.gui.show_input_dialog(title="Parâmetros", text="Informe o tamanho da população. (>=100)")
+        if v is not None:
+            values.append(v)
+        v = self.gui.show_input_dialog(title="Parâmetros", text="Informe a taxa de cruzamento. (60%-80%)")
+        if v is not None:
+            values.append(v)
+        v = self.gui.show_input_dialog(title="Parâmetros", text="Informe a taxa de mutação. (0.5%-1%)")
+        if v is not None:
+            values.append(v)
+        v = self.gui.show_input_dialog(title="Parâmetros", text="Informe o nr de gerações. (>=10)")
+        if v is not None:
+            values.append(v)
+        ret = self.graph.tsp(values[0], values[1], values[2], values[3], evt)
+        self.print_feedback(ret)
 
     def on_exit(self, event):
         self.gui.Close(True)

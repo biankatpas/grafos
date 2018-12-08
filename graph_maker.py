@@ -451,6 +451,10 @@ class GraphMaker:
             message = message + self.insert_edge(vertex_a, vertex_b, "") + '\n'
         return message
 
+    def tsp(self, population, crossover, mutation, generation, evt):
+        print(population, crossover, mutation, generation)
+        return 'O menu vale 0.63? :)'
+
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
             if self.vertices[i].color == 'white':
