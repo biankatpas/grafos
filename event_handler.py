@@ -227,8 +227,9 @@ class EventHandler:
         v = self.gui.show_input_dialog(title="Parâmetros", text="Informe o nr de gerações. (>=10)")
         if v is not None:
             values.append(v)
-        ret = self.graph.tsp(values[0], values[1], values[2], values[3], evt)
+        ret = self.graph.call_tsp(values[0], values[1], values[2], values[3], evt)
         self.print_feedback(ret)
+        # self.on_draw_graph(evt)
 
     def on_exit(self, event):
         self.gui.Close(True)

@@ -451,9 +451,55 @@ class GraphMaker:
             message = message + self.insert_edge(vertex_a, vertex_b, "") + '\n'
         return message
 
+    def call_tsp(self, population, crossover, mutation, generation, evt):
+        message = ""
+        self.clear_graph()
+        self.evt.on_draw_graph(evt)
+        message += self.set_map()
+        self.evt.on_draw_graph(evt)
+        message += self.tsp(population, crossover, mutation, generation, evt)
+        return message
+
     def tsp(self, population, crossover, mutation, generation, evt):
         print(population, crossover, mutation, generation)
         return 'O menu vale 0.63? :)'
+
+    def set_map(self):
+        message = "Criando o Mapa do Problema do Caixeiro Viajante\n"
+        message = message + self.set_cities()
+        message = message + self.set_routes()
+        message += "Mapa do Problema do Caixeiro Viajante Inserido\n"
+        return message
+
+    def set_cities(self):
+        nodes = (
+            "E",
+            "F",
+            "G",
+            "H",
+            "K",
+            "L",
+            "N"
+        )
+        message = ""
+        for vertex in nodes:
+            message = message + self.insert_vertex(vertex) + "\n"
+        return message
+
+    def set_routes(self):
+        edges = ('E,F,10', 'E,G,40', 'E,H,60', 'E,K,10', 'E,L,5',
+                 'F,N,47', 'F,L,10', 'F,H,30', 'F,E,10', 'F,K,70',
+                 'G,K,90', 'G,E,40', 'G,H,80',
+                 'H,L,40', 'H,F,30', 'H,K,73', 'H,E,60', 'H,G,80',
+                 'K,N,60', 'K,F,70', 'K,H,73', 'K,E,10', 'K,G,90',
+                 'L,H,40', 'L,E,5', 'L,F,10',
+                 'N,F,47', 'N,K,60')
+
+        message = ""
+        for i in edges:
+            vertex_a, vertex_b, weight = i.split(',')
+            message = message + self.insert_edge(vertex_a, vertex_b, weight) + '\n'
+        return message
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
