@@ -2,6 +2,9 @@ from graphviz import Graph
 from graphviz import Digraph
 from vertice import Vertice
 from aresta import Aresta
+
+from random import sample, shuffle, randrange, choice
+
 import time
 
 SPEED = 1
@@ -36,7 +39,7 @@ class GraphMaker:
     def insert_edge(self, vertex_a, vertex_b, peso, label=None):
         if vertex_a in self.vertices and vertex_b in self.vertices:
             if label is None or label == "":
-                label = vertex_a+vertex_b
+                label = vertex_a + vertex_b
             if label not in self.edges:
                 if peso != "":
                     self.edges[label] = Aresta(vertex_a, vertex_b, peso)
@@ -106,8 +109,8 @@ class GraphMaker:
             e = self.edges[edge]
             if self.debug >= 2:
                 self.debug_version()
-            return "As referências dos vértices da aresta " + str(edge)\
-                   + " são: " + str(e.origem)\
+            return "As referências dos vértices da aresta " + str(edge) \
+                   + " são: " + str(e.origem) \
                    + ", " + str(e.destino) + "."
         return "Aresta " + str(edge) + " não encontrada no grafo."
 
@@ -123,11 +126,11 @@ class GraphMaker:
             # APRESENTAR NOME E PESO
             if self.label_type == 2:
                 self.gv.edge(self.edges[e].origem, self.edges[e].destino, label=e + " " + str(self.edges[e].peso),
-                        style='filled', color=str(self.edges[e].color))
+                             style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS PESO
             elif self.label_type == 1:
                 self.gv.edge(self.edges[e].origem, self.edges[e].destino, str(self.edges[e].peso),
-                        style='filled', color=str(self.edges[e].color))
+                             style='filled', color=str(self.edges[e].color))
             # APRESENTAR APENAS NOME
             elif self.label_type == 0:
                 self.gv.edge(self.edges[e].origem, self.edges[e].destino, e,
@@ -174,7 +177,7 @@ class GraphMaker:
                 self.evt.on_draw_graph(evt)
         message = "Vértices acessados: "
         for i in self.vertices:
-             message += self.vertices[i].color
+            message += self.vertices[i].color
         return message
 
     def call_depth_search(self, vertex, evt):
@@ -245,8 +248,8 @@ class GraphMaker:
                     if matrixEst[i][k] + matrixEst[k][j] < matrixEst[i][j]:
                         matrixEst[i][j] = matrixEst[i][k] + matrixEst[k][j]
                         matrixPredec[i][j] = matrixPredec[k][j]
-            self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO ' + str(k+1))
-            self.printMatrix(matrixPredec, 'MATRIZ PREDECESSOR - ITERACAO ' + str(k+1))
+            self.printMatrix(matrixEst, 'MATRIZ ESTIMATIVA - ITERACAO ' + str(k + 1))
+            self.printMatrix(matrixPredec, 'MATRIZ PREDECESSOR - ITERACAO ' + str(k + 1))
         return "FLOYD DONE"
 
     def dijkstra(self, vertex, evt):
@@ -302,8 +305,8 @@ class GraphMaker:
         fechados = []
         path = []
 
-        print('org',origin)
-        print('dst',destiny)
+        print('org', origin)
+        print('dst', destiny)
         print()
 
         # n = 4
@@ -324,12 +327,12 @@ class GraphMaker:
             distancias = []
             for i in abertos:
                 print(self.vertices[i].name, self.vertices[i].position)
-                p1= self.vertices[origin].position
-                p2= self.vertices[i].position
-                p3= self.vertices[destiny].position
-                g = self.manhattan(p1, p2) # g = custo do nodo inicial até o nodo atual
-                h = self.manhattan(p2, p3) # h = custo do nodo atual ate o nodo destino
-                f = self.f(g, h)           # f = custo total
+                p1 = self.vertices[origin].position
+                p2 = self.vertices[i].position
+                p3 = self.vertices[destiny].position
+                g = self.manhattan(p1, p2)  # g = custo do nodo inicial até o nodo atual
+                h = self.manhattan(p2, p3)  # h = custo do nodo atual ate o nodo destino
+                f = self.f(g, h)  # f = custo total
                 distancias.append((self.vertices[i].name, f))
             print('distancias antes', distancias)
             distancias.sort(key=lambda tup: tup[1])
@@ -338,7 +341,7 @@ class GraphMaker:
             print('fechados:')
             for i in fechados:
                 print(i)
-            pai = distancias[0][0] # list of tuples [(vertex, distance)]
+            pai = distancias[0][0]  # list of tuples [(vertex, distance)]
             print('novo pai', pai)
             if pai in abertos:
                 abertos.remove(pai)
@@ -350,10 +353,10 @@ class GraphMaker:
             #     exit(0)
             # if self.debug >= 3:
             #     time.sleep(SPEED)
-                # self.debug_version()
-                # self.evt.on_draw_graph(evt)
+            # self.debug_version()
+            # self.evt.on_draw_graph(evt)
 
-        print('achou destino:',pai)
+        print('achou destino:', pai)
         predecessores = [destiny]
         node = destiny
         while node != origin:
@@ -364,16 +367,16 @@ class GraphMaker:
         predecessores.reverse()
         caminho = ""
         arestas = ""
-        for i in range(0, len(predecessores)-1):
+        for i in range(0, len(predecessores) - 1):
             caminho = caminho + predecessores[i] + '->'
-            arestas = arestas + predecessores[i]+predecessores[i+1] + ','
+            arestas = arestas + predecessores[i] + predecessores[i + 1] + ','
         caminho = caminho + predecessores[-1]
         distancia = self.manhattan(self.vertices[caminho[0]].position, self.vertices[caminho[-1]].position)
         print('caminho: ', caminho)
         print('distancia: ', distancia)
         print('arestas: ', arestas)
         e = arestas.split(',')
-        for i in e[:len(e)-1]:
+        for i in e[:len(e) - 1]:
             self.edges[i].color = 'green'
         self.evt.on_draw_graph(evt)
         return 'caminho = ' + caminho + "\ndistância (KM) = " + str(distancia) + "\nA* DONE"
@@ -381,7 +384,7 @@ class GraphMaker:
     def manhattan(self, p1, p2):
         return sum([abs(p1[i] - p2[i]) for i in range(len(p1))]) / len(p1)
 
-    def f(self,g,h):
+    def f(self, g, h):
         return g + h
 
     def clear_graph(self):
@@ -389,29 +392,29 @@ class GraphMaker:
         self.edges.clear()
 
     def set_graph(self):
-       message = "Criando o Grafo do A*\n"
-       message = message + self.set_vertices()
-       message = message + self.set_edges()
-       message += "Grafo do A* Inserido\n"
-       return message
+        message = "Criando o Grafo do A*\n"
+        message = message + self.set_vertices()
+        message = message + self.set_edges()
+        message += "Grafo do A* Inserido\n"
+        return message
 
     def set_vertices(self):
         nodes = {'A': (950, 231),
                  'B': (607, 486),
                  'C': (891, 762),
-                 'D': (456, 19 ),
+                 'D': (456, 19),
                  'E': (821, 445),
                  'F': (615, 792),
                  'G': (922, 738),
                  'H': (176, 406),
                  'I': (935, 917),
                  'J': (410, 894),
-                 'K': (58 , 353),
-                 'L': (813, 10 ),
+                 'K': (58, 353),
+                 'L': (813, 10),
                  'M': (139, 203),
                  'N': (199, 604),
                  'O': (272, 199),
-                 'P': (15 , 747),
+                 'P': (15, 747),
                  'Q': (445, 932),
                  'R': (466, 419),
                  'S': (846, 525),
@@ -460,9 +463,9 @@ class GraphMaker:
         message += self.tsp(population, crossover, mutation, generation, evt)
         return message
 
-    def tsp(self, population, crossover, mutation, generation, evt):
-        print(population, crossover, mutation, generation)
-        return 'O menu vale 0.63? :)'
+    def tsp(self, population_size, crossover, mutation, generation, evt):
+        self.generate_first_population(population_size)
+        return 'O menu vale 0.63?!?! :)'
 
     def set_map(self):
         message = "Criando o Mapa do Problema do Caixeiro Viajante\n"
@@ -500,6 +503,58 @@ class GraphMaker:
             vertex_a, vertex_b, weight = i.split(',')
             message = message + self.insert_edge(vertex_a, vertex_b, weight) + '\n'
         return message
+
+    def generate_first_population(self, population_size):
+        enunciado = False
+        if enunciado:
+            population = []
+            print("Criando a população inicial...")
+            f = open("population.csv", 'w')
+            while len(population) < population_size:
+                print("Criando individuo...")
+                individuo = [(choice(list(self.vertices)))]
+                rotas = self.vertices[individuo[-1]].adj
+                while len(individuo) < len(self.vertices):
+                    # print("Gerando rota...")
+                    rota = choice(rotas)
+                    if rota not in individuo:
+                        individuo.append(rota)
+                        rotas = self.vertices[individuo[-1]].adj
+                        if len(individuo) == len(self.vertices):
+                            while individuo[0] not in rotas:
+                                print("Nao passa por todas as cidades... Voltando")
+                                individuo.pop()
+                                rotas = self.vertices[individuo[-1]].adj
+                print("Individuo criado")
+                # print(individuo)
+                f.write(
+                    individuo[0] + ',' +
+                    individuo[1] + ',' +
+                    individuo[2] + ',' +
+                    individuo[3] + ',' +
+                    individuo[4] + ',' +
+                    individuo[5] + ',' +
+                    individuo[6] + '\n')
+                population.append(individuo)
+            print("População criada...")
+            # print(population)
+            return population
+        else:
+            print("Criando a população inicial...")
+            pop = self.shuffle_first_population(population_size)
+            print("População criada...")
+            for ind in pop:
+                print(ind)
+
+    def shuffle_first_population(self, population_size):
+        population = []
+        l = []
+        for v in self.vertices:
+            l.append(v)
+        while len(population) < population_size:
+            shuffle(l)
+            population.append(tuple(l))
+        return population
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
