@@ -541,10 +541,11 @@ class GraphMaker:
             return population
         else:
             print("Criando a população inicial...")
-            pop = self.shuffle_first_population(population_size)
+            population = self.shuffle_first_population(population_size)
             print("População criada...")
-            for ind in pop:
-                print(ind)
+            # for ind in population:
+            #     print(ind)
+            return population
 
     def shuffle_first_population(self, population_size):
         population = []
@@ -555,6 +556,12 @@ class GraphMaker:
             shuffle(l)
             population.append(tuple(l))
         return population
+
+    def make_mutation(self, chromossome):
+        i, j = sample(chromossome, 2)
+        c_list = list(chromossome)
+        c_list[i], c_list[j] = c_list[j], c_list[i]
+        return tuple(c_list)
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
