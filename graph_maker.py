@@ -567,8 +567,7 @@ class GraphMaker:
         for ind in population:
             print(ind)
         print('depois do crossover')
-        population = self.crossover()
-        print('depois da mutação')
+        population = self.crossover(population, crossover)
         for ind in population:
             print(ind)
         # -----------------------------------------------------------------
@@ -586,9 +585,23 @@ class GraphMaker:
     def selection(self):
         pass
 
-    def crossover(self):
-        crossed_pop = []
-        return crossed_pop
+    def crossover(self, population, crossover_rate):
+        newPopulation = []
+        for index in range(0, len(population)):
+            if index < crossover_rate:
+                firstParent = population[random.randint(1, len(population) - 1)]
+                secondParent = population[random.randint(1, len(population) - 1)]
+                newSon = []
+                randChoice = random.randint(1, len(firstParent))
+                for i in range(len(firstParent)):
+                    if i <= randChoice:
+                        newSon.append(firstParent[i])
+                    else:
+                        newSon.append(secondParent[i])
+                newPopulation.append(newSon)
+            else:
+                newPopulation.append(population[random.randint(1, len(population) - 1)])
+        return newPopulation
 
     def mutate(self, individual, mutation_rate):
         for swapped in range(len(individual)):
