@@ -465,15 +465,10 @@ class GraphMaker:
         return message
 
     def tsp(self, population_size, crossover, mutation, generation, evt):
-
         population = self.generate_first_population(population_size)
-        print('antes da mutação')
-        for ind in population:
-            print(ind)
-        population = self.make_mutation(population, mutation)
-        print('depois da mutação')
-        for ind in population:
-            print(ind)
+
+        for i in range(0, generation):
+            self.generate_new_population(population, crossover, mutation)
 
         return 'O menu vale 0.63?!?! :)'
 
@@ -567,9 +562,23 @@ class GraphMaker:
             population.append(list(l))
         return population
 
-    def generate_new_population(self, generation):
-        pass
-
+    def generate_new_population(self, population, crossover, mutation):
+        print('antes do crossover')
+        for ind in population:
+            print(ind)
+        print('depois do crossover')
+        population = self.crossover()
+        print('depois da mutação')
+        for ind in population:
+            print(ind)
+        # -----------------------------------------------------------------
+        print('antes da mutação')
+        for ind in population:
+            print(ind)
+        population = self.make_mutation(population, mutation)
+        print('depois da mutação')
+        for ind in population:
+            print(ind)
 
     def fit(self):
         pass
@@ -578,7 +587,8 @@ class GraphMaker:
         pass
 
     def crossover(self):
-        pass
+        crossed_pop = []
+        return crossed_pop
 
     def mutate(self, individual, mutation_rate):
         for swapped in range(len(individual)):
