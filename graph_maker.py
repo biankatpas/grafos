@@ -588,7 +588,7 @@ class GraphMaker:
     def crossover(self, population, crossover_rate):
         newPopulation = []
         for index in range(0, len(population)):
-            if index < crossover_rate:
+            if index < (crossover_rate * (len(population)/100)):
                 firstParent = population[random.randint(1, len(population) - 1)]
                 secondParent = population[random.randint(1, len(population) - 1)]
                 newSon = []
