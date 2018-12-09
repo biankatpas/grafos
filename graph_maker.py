@@ -567,6 +567,19 @@ class GraphMaker:
             population.append(list(l))
         return population
 
+    def generate_new_population(self, generation):
+        pass
+
+
+    def fit(self):
+        pass
+
+    def selection(self):
+        pass
+
+    def crossover(self):
+        pass
+
     def mutate(self, individual, mutation_rate):
         for swapped in range(len(individual)):
             if random.random() < mutation_rate:
