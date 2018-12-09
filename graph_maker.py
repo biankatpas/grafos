@@ -4,6 +4,7 @@ from vertice import Vertice
 from aresta import Aresta
 
 from random import sample, shuffle, randrange, choice
+import random
 
 import time
 
@@ -464,7 +465,16 @@ class GraphMaker:
         return message
 
     def tsp(self, population_size, crossover, mutation, generation, evt):
-        self.generate_first_population(population_size)
+
+        population = self.generate_first_population(population_size)
+        print('antes da mutação')
+        for ind in population:
+            print(ind)
+        population = self.make_mutation(population, mutation)
+        print('depois da mutação')
+        for ind in population:
+            print(ind)
+
         return 'O menu vale 0.63?!?! :)'
 
     def set_map(self):
@@ -554,14 +564,29 @@ class GraphMaker:
             l.append(v)
         while len(population) < population_size:
             shuffle(l)
-            population.append(tuple(l))
+            population.append(list(l))
         return population
 
-    def make_mutation(self, chromossome):
-        i, j = sample(chromossome, 2)
-        c_list = list(chromossome)
-        c_list[i], c_list[j] = c_list[j], c_list[i]
-        return tuple(c_list)
+    def mutate(self, individual, mutation_rate):
+        for swapped in range(len(individual)):
+            if random.random() < mutation_rate:
+                swap_with = int(random.random() * len(individual))
+
+                city1 = individual[swapped]
+                city2 = individual[swap_with]
+
+                individual[swapped] = city2
+                individual[swap_with] = city1
+
+        return individual
+
+    def make_mutation(self, population, mutation_rate):
+        mutated_pop = []
+
+        for ind in range(0, len(population)):
+            mutated_ind = self.mutate(population[ind], mutation_rate)
+            mutated_pop.append(mutated_ind)
+        return mutated_pop
 
     def get_adjacent(self, u):
         for i in self.vertices[u].adj:
