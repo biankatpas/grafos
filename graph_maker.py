@@ -467,13 +467,21 @@ class GraphMaker:
     def tsp(self, population_size, crossover, mutation, generation, evt):
 
         population = self.generate_first_population(population_size)
-        print('antes da mutação')
+        print('antes do crossover')
         for ind in population:
             print(ind)
+        population = self.crossover(population, crossover)
+        print('depois do crossover')
+        for ind in population:
+            print(ind)
+
+        # print('antes da mutação')
+        # for ind in population:
+        #     print(ind)
         population = self.make_mutation(population, mutation)
-        print('depois da mutação')
-        for ind in population:
-            print(ind)
+        # print('depois da mutação')
+        # for ind in population:
+        #     print(ind)
 
         return 'O menu vale 0.63?!?! :)'
 
@@ -566,6 +574,25 @@ class GraphMaker:
             shuffle(l)
             population.append(list(l))
         return population
+
+    def crossover(self, population, crossover_rate):
+        newPopulation = []
+        for index in range(0, len(population)):
+            if index < crossover_rate:
+                firstParent = population[random.randint(1, len(population)-1)]
+                secondParent = population[random.randint(1, len(population)-1)]
+                newSon = []
+                randChoice = random.randint(1, len(firstParent))
+                for i in range(len(firstParent)):
+                    if i <= randChoice:
+                        newSon.append(firstParent[i])
+                    else:
+                        newSon.append(secondParent[i])
+                newPopulation.append(newSon)
+            else:
+                newPopulation.append(population[random.randint(1, len(population)-1)])
+        return newPopulation
+
 
     def mutate(self, individual, mutation_rate):
         for swapped in range(len(individual)):
