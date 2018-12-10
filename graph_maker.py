@@ -471,7 +471,11 @@ class GraphMaker:
             print('-----------------------------------------------------')
             print("Criando a geração", i)
             print('-----------------------------------------------------')
-            self.generate_new_population(population, crossover, mutation)
+            population = self.generate_new_population(population, crossover, mutation)
+
+        print('-----------------------------------------------------')
+        id, fit = self.best_cromossome(population)
+        print("Melhor Rota =", population[id], '\nCusto =', fit)
 
         return 'O menu vale 0.63?!?! :)'
 
@@ -575,21 +579,17 @@ class GraphMaker:
         print('-----------------------------------------------------')
         print('depois do crossover')
         print('-----------------------------------------------------')
-        population = self.crossover(population, crossover)
-        for ind in population:
+        crossed_population = self.crossover(population, crossover)
+        for ind in crossed_population:
             print(ind)
         # -----------------------------------------------------------------
-        print('-----------------------------------------------------')
-        print('antes da mutação')
-        print('-----------------------------------------------------')
-        for ind in population:
-            print(ind)
-        population = self.make_mutation(population, mutation)
+        mutated_population = self.make_mutation(crossed_population, mutation)
         print('-----------------------------------------------------')
         print('depois da mutação')
         print('-----------------------------------------------------')
-        for ind in population:
+        for ind in mutated_population:
             print(ind)
+        return mutated_population
 
     def best_fits(self, population):
         population_fit = []
@@ -600,10 +600,12 @@ class GraphMaker:
 
     def best_cromossome(self, population):
         best = 0
+        fit = 0
         for index in range(0, len(population)):
             if self.fit(population[index]) < self.fit(population[best]):
                 best = index
-        return best
+                fit = self.fit(population[best])
+        return best, fit
 
     def fit(self, cromossome):
         fit = 0
