@@ -464,14 +464,14 @@ class GraphMaker:
         message += self.tsp(population, crossover, mutation, generation, evt)
         return message
 
-    def tsp(self, population_size, crossover, mutation, generation, evt):
+    def tsp(self, population_size, crossover_rate, mutation_rate, generations, evt):
         population = self.generate_first_population(population_size)
 
-        for i in range(0, generation):
+        for i in range(0, generations):
             print('-----------------------------------------------------')
             print("Criando a geração", i)
             print('-----------------------------------------------------')
-            population = self.generate_new_population(population, crossover, mutation)
+            population = self.generate_new_population(population, crossover_rate, mutation_rate)
 
         print('-----------------------------------------------------')
 
@@ -523,13 +523,13 @@ class GraphMaker:
     def generate_first_population(self, population_size):
         print('-----------------------------------------------------')
         print("Criando a população inicial...")
-        population = self.shuffle_vertices(population_size)
+        population = self.generate_shuffle_chromosome(population_size)
         print("População criada...")
         # for ind in population:
         #     print(ind)
         return population
 
-    def shuffle_vertices(self, population_size):
+    def generate_shuffle_chromosome(self, population_size):
         population = []
         l = []
         for v in self.vertices:
@@ -539,7 +539,7 @@ class GraphMaker:
             population.append(list(l))
         return population
 
-    def generate_new_population(self, population, crossover, mutation):
+    def generate_new_population(self, population, crossover_rate, mutation_rate):
         print('antes')
         print('-----------------------------------------------------')
         for ind in population:
@@ -547,11 +547,11 @@ class GraphMaker:
         print('-----------------------------------------------------')
         print('depois do crossover')
         print('-----------------------------------------------------')
-        crossed_population = self.make_crossover(population, crossover)
+        crossed_population = self.make_crossover(population, crossover_rate)
         for ind in crossed_population:
             print(ind)
         # -----------------------------------------------------------------
-        mutated_population = self.make_mutation(crossed_population, mutation)
+        mutated_population = self.make_mutation(crossed_population, mutation_rate)
         print('-----------------------------------------------------')
         print('depois da mutação')
         print('-----------------------------------------------------')
