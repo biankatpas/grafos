@@ -532,9 +532,9 @@ class GraphMaker:
         print('-----------------------------------------------------')
         print("Criando a população inicial...")
         population = self.generate_shuffle_chromosome(population_size)
-        print("População criada...")
-        # for ind in population:
-        #     print(ind)
+        print("População inicial criada...")
+        for ind in population:
+            print(ind)
         return population
 
     def generate_shuffle_chromosome(self, population_size):
@@ -546,6 +546,23 @@ class GraphMaker:
             shuffle(l)
             population.append(list(l))
         return population
+
+    # lento + falta nao repetir cidade
+    # def generate_shuffle_chromosome(self, population_size):
+    #     population = []
+    #     cities = []
+    #     for v in self.vertices:
+    #         cities.append(v)
+    #     print('cidades', cities)
+    #     while len(population) < population_size:
+    #         route = []
+    #         route.append(choice(cities))
+    #         while len(route) < len(cities):
+    #             next_city = choice(self.vertices[route[-1]].adj)
+    #             if next_city not in route:
+                     # route.append(next_city)
+            # population.append(list(route))
+        # return population
 
     def generate_new_population(self, population, crossover_rate, mutation_rate):
         print('antes')
@@ -593,6 +610,13 @@ class GraphMaker:
                 fit += int(self.edges[e].peso)
             else:
                 return 9999
+
+        if chromosome[-1] in self.vertices[chromosome[0]].adj:
+            e = self.get_edge(chromosome[-1], chromosome[0])
+            fit += int(self.edges[e].peso)
+        else:
+            return 9999
+
         return fit
 
     def make_crossover(self, population, crossover_rate):
