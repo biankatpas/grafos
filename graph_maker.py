@@ -468,6 +468,9 @@ class GraphMaker:
         population = self.generate_first_population(population_size)
 
         for i in range(0, generation):
+            print('-----------------------------------------------------')
+            print("Criando a geração", i)
+            print('-----------------------------------------------------')
             self.generate_new_population(population, crossover, mutation)
 
         return 'O menu vale 0.63?!?! :)'
@@ -513,6 +516,7 @@ class GraphMaker:
         enunciado = False
         if enunciado:
             population = []
+            print('-----------------------------------------------------')
             print("Criando a população inicial...")
             f = open("population.csv", 'w')
             while len(population) < population_size:
@@ -545,6 +549,7 @@ class GraphMaker:
             # print(population)
             return population
         else:
+            print('-----------------------------------------------------')
             print("Criando a população inicial...")
             population = self.shuffle_first_population(population_size)
             print("População criada...")
@@ -564,26 +569,53 @@ class GraphMaker:
 
     def generate_new_population(self, population, crossover, mutation):
         print('antes do crossover')
+        print('-----------------------------------------------------')
         for ind in population:
             print(ind)
+        print('-----------------------------------------------------')
         print('depois do crossover')
+        print('-----------------------------------------------------')
         population = self.crossover(population, crossover)
         for ind in population:
             print(ind)
         # -----------------------------------------------------------------
+        print('-----------------------------------------------------')
         print('antes da mutação')
+        print('-----------------------------------------------------')
         for ind in population:
             print(ind)
         population = self.make_mutation(population, mutation)
+        print('-----------------------------------------------------')
         print('depois da mutação')
+        print('-----------------------------------------------------')
         for ind in population:
             print(ind)
 
-    def fit(self):
-        pass
+    def best_fits(self, population):
+        population_fit = []
+        for i in range(0, len(population)):
+            population_fit.append([i, self.fit(population[i])])
+        population_fit.sort(key=lambda vec: vec[1])
+        return population_fit
 
-    def selection(self):
-        pass
+    def best_cromossome(self, population):
+        best = 0
+        for index in range(0, len(population)):
+            if self.fit(population[index]) < self.fit(population[best]):
+                best = index
+        return best
+
+    def fit(self, cromossome):
+        fit = 0
+        for i in range(0, len(cromossome)-1):
+            if cromossome[i+1] in self.vertices[cromossome[i]].adj:
+                e = self.get_edge(cromossome[i], cromossome[i+1])
+                # print(self.edges[e].peso)
+                # print(type(self.edges[e].peso))
+                fit += int(self.edges[e].peso)
+            else:
+                return 9999
+        return fit
 
     def crossover(self, population, crossover_rate):
         newPopulation = []
@@ -599,6 +631,16 @@ class GraphMaker:
                     else:
                         newSon.append(secondParent[i])
                 newPopulation.append(newSon)
+        best_fits = self.best_fits(population)
+        # print(best_fits)
+        # exit(0)
+        index = 0
+        while len(newPopulation) < len(population):
+            if index < len(population):
+                id, fit = best_fits[index]
+                index += 1
+                if fit < 9999:
+                    newPopulation.append(population[id])
             else:
                 newPopulation.append(population[random.randint(1, len(population) - 1)])
         return newPopulation
