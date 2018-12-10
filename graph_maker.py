@@ -477,11 +477,19 @@ class GraphMaker:
 
         chromosome, fit = self.best_chromosome(population)
         if fit is not None:
+            self.color_edge_in_tsp(population[chromosome])
             message = "Melhor Rota = " + str(population[chromosome]) + '\nCusto = ' + str(fit)
+            self.evt.on_draw_graph(evt)
         else:
             message = "Não foi encontrada uma rota adequada"
 
         return message
+
+    def color_edge_in_tsp(self, chromosome, color='green'):
+        for c in range(0, len(chromosome)-1):
+            self.edges[chromosome[c] + chromosome[c + 1]].color = color
+            self.vertices[chromosome[c]].color = 'cyan'
+        self.vertices[chromosome[len(chromosome) - 1]].color = 'cyan'
 
     def set_map(self):
         message = "Criando o Mapa do Problema do Caixeiro Viajante\n"
