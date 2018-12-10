@@ -474,10 +474,14 @@ class GraphMaker:
             population = self.generate_new_population(population, crossover, mutation)
 
         print('-----------------------------------------------------')
-        id, fit = self.best_cromossome(population)
-        print("Melhor Rota =", population[id], '\nCusto =', fit)
 
-        return 'O menu vale 0.63?!?! :)'
+        chromosome, fit = self.best_chromosome(population)
+        if fit is not None:
+            message = "Melhor Rota = " + str(population[chromosome]) + '\nCusto = ' + str(fit)
+        else:
+            message = "Não foi encontrada uma rota adequada"
+
+        return message
 
     def set_map(self):
         message = "Criando o Mapa do Problema do Caixeiro Viajante\n"
@@ -517,51 +521,15 @@ class GraphMaker:
         return message
 
     def generate_first_population(self, population_size):
-        enunciado = False
-        if enunciado:
-            population = []
-            print('-----------------------------------------------------')
-            print("Criando a população inicial...")
-            f = open("population.csv", 'w')
-            while len(population) < population_size:
-                print("Criando individuo...")
-                individuo = [(choice(list(self.vertices)))]
-                rotas = self.vertices[individuo[-1]].adj
-                while len(individuo) < len(self.vertices):
-                    # print("Gerando rota...")
-                    rota = choice(rotas)
-                    if rota not in individuo:
-                        individuo.append(rota)
-                        rotas = self.vertices[individuo[-1]].adj
-                        if len(individuo) == len(self.vertices):
-                            while individuo[0] not in rotas:
-                                print("Nao passa por todas as cidades... Voltando")
-                                individuo.pop()
-                                rotas = self.vertices[individuo[-1]].adj
-                print("Individuo criado")
-                # print(individuo)
-                f.write(
-                    individuo[0] + ',' +
-                    individuo[1] + ',' +
-                    individuo[2] + ',' +
-                    individuo[3] + ',' +
-                    individuo[4] + ',' +
-                    individuo[5] + ',' +
-                    individuo[6] + '\n')
-                population.append(individuo)
-            print("População criada...")
-            # print(population)
-            return population
-        else:
-            print('-----------------------------------------------------')
-            print("Criando a população inicial...")
-            population = self.shuffle_first_population(population_size)
-            print("População criada...")
-            # for ind in population:
-            #     print(ind)
-            return population
+        print('-----------------------------------------------------')
+        print("Criando a população inicial...")
+        population = self.shuffle_vertices(population_size)
+        print("População criada...")
+        # for ind in population:
+        #     print(ind)
+        return population
 
-    def shuffle_first_population(self, population_size):
+    def shuffle_vertices(self, population_size):
         population = []
         l = []
         for v in self.vertices:
@@ -572,14 +540,14 @@ class GraphMaker:
         return population
 
     def generate_new_population(self, population, crossover, mutation):
-        print('antes do crossover')
+        print('antes')
         print('-----------------------------------------------------')
         for ind in population:
             print(ind)
         print('-----------------------------------------------------')
         print('depois do crossover')
         print('-----------------------------------------------------')
-        crossed_population = self.crossover(population, crossover)
+        crossed_population = self.make_crossover(population, crossover)
         for ind in crossed_population:
             print(ind)
         # -----------------------------------------------------------------
@@ -591,27 +559,27 @@ class GraphMaker:
             print(ind)
         return mutated_population
 
-    def best_fits(self, population):
+    def calculate_population_fit(self, population):
         population_fit = []
         for i in range(0, len(population)):
-            population_fit.append([i, self.fit(population[i])])
+            population_fit.append([i, self.calculate_chromosome_fit(population[i])])
         population_fit.sort(key=lambda vec: vec[1])
         return population_fit
 
-    def best_cromossome(self, population):
+    def best_chromosome(self, population):
         best = 0
-        fit = 0
+        fit = None
         for index in range(0, len(population)):
-            if self.fit(population[index]) < self.fit(population[best]):
+            if self.calculate_chromosome_fit(population[index]) < self.calculate_chromosome_fit(population[best]):
                 best = index
-                fit = self.fit(population[best])
+                fit = self.calculate_chromosome_fit(population[best])
         return best, fit
 
-    def fit(self, cromossome):
+    def calculate_chromosome_fit(self, chromosome):
         fit = 0
-        for i in range(0, len(cromossome)-1):
-            if cromossome[i+1] in self.vertices[cromossome[i]].adj:
-                e = self.get_edge(cromossome[i], cromossome[i+1])
+        for i in range(0, len(chromosome)-1):
+            if chromosome[i+1] in self.vertices[chromosome[i]].adj:
+                e = self.get_edge(chromosome[i], chromosome[i+1])
                 # print(self.edges[e].peso)
                 # print(type(self.edges[e].peso))
                 fit += int(self.edges[e].peso)
@@ -619,7 +587,7 @@ class GraphMaker:
                 return 9999
         return fit
 
-    def crossover(self, population, crossover_rate):
+    def make_crossover(self, population, crossover_rate):
         newPopulation = []
         for index in range(0, len(population)):
             if index < (crossover_rate * (len(population)/100)):
@@ -631,9 +599,14 @@ class GraphMaker:
                     if i <= randChoice:
                         newSon.append(firstParent[i])
                     else:
-                        newSon.append(secondParent[i])
+                        if secondParent[i] not in newSon:
+                            newSon.append(secondParent[i])
+                while len(newSon) < len(secondParent):
+                    randChoice = random.randint(0, len(secondParent)-1)
+                    if secondParent[randChoice] not in newSon:
+                        newSon.append(secondParent[randChoice])
                 newPopulation.append(newSon)
-        best_fits = self.best_fits(population)
+        best_fits = self.calculate_population_fit(population)
         # print(best_fits)
         # exit(0)
         index = 0
