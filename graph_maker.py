@@ -476,9 +476,24 @@ class GraphMaker:
         print('-----------------------------------------------------')
 
         chromosome, fit = self.best_chromosome(population)
+        message = ""
         if fit is not None:
+            possible_routes = self.calculate_population_fit(population)
+            message += "Rotas possíveis\n"
+            message += "-----------------------------------------"
+            for route in possible_routes:
+                id, fit = route
+                if fit < 9999:
+                    message += "\nid = " + str(id) + "\ncaminho = "
+                    for e in population[id]:
+                        message += "->" + str(e)
+                    message += "\ncusto = " + str(fit) + "\n"
+                    message += "-----------------------------------------"
             self.color_edge_in_tsp(population[chromosome])
-            message = "Melhor Rota = " + str(population[chromosome]) + '\nCusto = ' + str(fit)
+            print('-----------------------------------------------------')
+            message += "\nMelhor Rota"
+            message += "\nid = " + str(chromosome) + "\ncaminho = "
+            message += str(population[chromosome])
             self.evt.on_draw_graph(evt)
         else:
             message = "Não foi encontrada uma rota adequada"
